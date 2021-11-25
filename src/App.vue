@@ -131,8 +131,15 @@ import { Widget } from './components/Base/widget'
 // import {UpdateWidget} from "./app.vue";
 
 // when add more available widgets add ref to the widgets
-import LabelStatus from './components/LabelStatus'
+import LabelStatus from './components/Status/LabelStatus'
 import rightClickMenu from '@/components/Common/rightClickMenu.vue'
+import Config from './components/Config/Config'
+import Status from './components/Status/Status'
+import Grid from './components/Layout/Grid'
+import State from './components/State/State'
+import BoolState from './components/State/BoolState'
+import Method from './components/Method/Method'
+import Navigation from './components/Navigation/Navigation'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
@@ -141,9 +148,16 @@ import rightClickMenu from '@/components/Common/rightClickMenu.vue'
     components: {
       // when add more available widgets add ref to the widgets
       LabelStatus,
+      Config,
+      Status,
       GridLayout,
       GridItem,
-      rightClickMenu
+      rightClickMenu,
+      Grid,
+      State,
+      BoolState,
+      Method,
+      Navigation
     }
   })
 
@@ -162,7 +176,14 @@ export default class App extends Vue {
 
     // when add more available widgets add its name here
     availableWidgets = [
-      'LabelStatus'
+      'LabelStatus',
+      'Config',
+      'Status',
+      'Grid',
+      'State',
+      'BoolState',
+      'Method',
+      'Navigation'
     ];
 
     deleteWidget (index:number):void{

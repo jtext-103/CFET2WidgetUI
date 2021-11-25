@@ -73,6 +73,13 @@
                                        switch-color="{checked: '#25EF02', unchecked: 'linear-gradient(red, yellow)'}"
                                        :labels="{checked: 'show', unchecked: 'hide'}"/>
                     </div>
+                    <div v-if="key ==='EventType'">
+                      <toggle-button v-model="EditData.edit.isSubscribe"
+                                     width="80"
+                                     height="30"
+                                     switch-color="{checked: '#25EF02', unchecked: 'linear-gradient(red, yellow)'}"
+                                     :labels="{checked: 'show', unchecked: 'hide'}"/>
+                    </div>
                 </td>
             </tr>
 
@@ -252,16 +259,13 @@ export default class WindowsApp extends Vue {
         )
       } else if (this.EditData.edit.url !== '' && typeof (this.EditData.edit.url) !== 'undefined') {
         console.log('2')
-        console.log(typeof (this.EditData.edit.url))
         this.InputUrl = this.EditData.edit.url
-        console.log(this.InputUrl)
         this.isShowParams = true
         this.setVariableList(
           this.pathProcessor.extractVarFromPath(this.EditData.params.PokedPath)
         )
       } else if (this.EditData.edit.path !== '' && typeof (this.EditData.edit.path) !== 'undefined') {
         console.log('3')
-        console.log(this.EditData.edit.path)
         this.InputPath = this.EditData.edit.path
         this.InputTimePath = this.EditData.edit.timePath
         this.isShowParams = true

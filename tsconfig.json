@@ -48,6 +48,7 @@
     "/node_modules/@antv/g2plot/lib/index.d.ts",
     "src/types/g2plot/g2plot.d.ts",
     "src/types/g2plot/global.d.ts",
+    "node_modules/@types/pubsub-js/index.d.ts",
     "node_modules/@types/pubsub-js/index.d.ts"
   ],
   "exclude": [

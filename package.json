@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@antv/g2plot": "^2.0.1",
     "@hscmap/vue-window": "^2.4.2",
     "@msgpack/msgpack": "^2.7.0",
     "@types/pubsub-js": "^1.5.18",

@@ -16,6 +16,7 @@ export class Widget extends Vue {
     this.refIndex = refIndex;
   } */
 
+  WidgetComponentName = '';
   pathProcessor = new PathProcessor();
   strMapObjChange = new StrMapObjChange();
   EditPathPoke : string =  '';
@@ -36,6 +37,7 @@ export class Widget extends Vue {
       type: '',
       parseUrl: '',
       url: this.config.data.url,
+      isSubscribe: false
     },
     props: {
     },
@@ -46,9 +48,9 @@ export class Widget extends Vue {
 
   isShowPath: boolean = false;
 
-  public del(index:number){
+  /*public del(index:number){
     this.$emit('del', index);
-  }
+  }*/
 
 
   public openWindows(){
@@ -98,8 +100,10 @@ export class Widget extends Vue {
 
     this.EditData.params.Args = Args;
 
+    if(this.WidgetComponentName !== 'Method'){
+      this.viewLoad(Args);
+    }
 
-    this.viewLoad(Args);
   }
 
   public pathPoke() {
@@ -145,7 +149,6 @@ export class Widget extends Vue {
       pokedPath = pokedPath.substring(0, pokedPath.length - 1);
     }
     this.config.data.url = pokedPath;
-    console.log("poked"+ this.config.data.url);
   }
 
   public replaceStartPath(startPath: string): void {
@@ -156,13 +159,24 @@ export class Widget extends Vue {
 
   public async getData(url: string) {
     var apiLoad = url;
-    console.log(url);
     await window.$axios.get(apiLoad)
       .then((response: { data: any; }) => {
         this.sample = response.data;
         console.log(response.data);
 
       })
+
+  }
+
+  public async invokeData(url: string) {
+    var apiLoad = url;
+    await window.$axios.put(apiLoad)
+      .then((response: { data: any; }) => {
+        this.sample = response.data;
+
+      }).catch((err: any) =>{
+          alert(err);
+      });
 
   }
 
@@ -185,8 +199,11 @@ export class Widget extends Vue {
       this.config.data.url
     );
     console.log(this.pathwithVar);
+    if(this.EditData.edit.isSubscribe === true){
+      this.connectScoketAndSubscribe(this.pathwithVar);
+    }
 
-    this.connectScoketAndSubscribe(this.pathwithVar);
+
 
     await this.getData(this.pathwithVar);
 
@@ -195,7 +212,6 @@ export class Widget extends Vue {
   public connectScoketAndSubscribe(pathwithVar: string){
     var _this = this;
     if(pathwithVar.search("http:\/\/") != -1){
-      console.log('here');
 
       pathwithVar = pathwithVar.substr(7);
       var index = pathwithVar.indexOf("\/");
@@ -208,7 +224,6 @@ export class Widget extends Vue {
 
       var userIp = ipstr + portNum.toString();
       pathwithVar = pathwithVar.substr(index);
-      console.log(pathwithVar);
       var wsPath = ("ws:" +"\/\/"+userIp).toString();
       var ws = new WebSocket(wsPath);
 

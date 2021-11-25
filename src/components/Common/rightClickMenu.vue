@@ -1,11 +1,11 @@
 <template>
     <div id="rightClickMenu">
         <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-            <li @click="openWindows">EDIT</li>
-            <li >DELETE</li>
-            <li class="xcolor" >SynchronizeX</li>
+            <li class="xcolor" @click="openWindows">EDIT</li>
+            <li class="ycolor" @click="del">DELETE</li>
+            <!--<li class="xcolor" >SynchronizeX</li>
             <li class="ycolor" >SynchronizeY</li>
-            <li class="xycolor" >SynchronizeXY</li>
+            <li class="xycolor" >SynchronizeXY</li>-->
         </ul>
     </div>
 
@@ -40,8 +40,12 @@ export default class rightClickMenu extends Vue {
         }
 
         openWindows () {
-          console.log('first')
           this.$emit('openWindows')
+        }
+
+        del () {
+          console.log('d')
+          this.$emit('del')
         }
 
         openMenu (e) {

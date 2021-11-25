@@ -19,7 +19,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/': {
-        target: 'http://192.168.2.58:8002',
+        target: 'http://267.67.25.5:8002',
         secure: false,
         changeOrigin: true
       }

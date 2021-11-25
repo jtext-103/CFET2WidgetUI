@@ -14,16 +14,8 @@
         <div style="border: solid 1px;" v-bind:style="{ color: activeColor, fontSize: EditData.props.fontSize + 'px' }" >{{ StatusValue }}</div>
       </div>
       <div style="margin-left: 5px;"  v-if="EditData.edit.isShowStateVlaue" v-bind:style="{ color: activeColor, fontSize: EditData.props.fontSize + 'px' }" >{{EditData.props.unit}}</div>
-
-      <WidgetParams
-        class="column"
-        ref="WidgetParams"
-        v-show="isShowParams"
-        action="get"
-        @updataVariables="viewLoad"
-      ></WidgetParams>
     </div>
-    <rightClickMenu ref="rightClickMenu" @openWindows="openWindows"></rightClickMenu>
+    <rightClickMenu ref="rightClickMenu" @del="del" @openWindows="openWindows"></rightClickMenu>
 
 
   </div>
@@ -32,10 +24,10 @@
 <script lang="ts">
 import Component from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { Widget } from './Base/widget'
-import { EditData } from './Base/EditData'
-import { WidgetConfig } from './Base/WidgetConfig'
-import rightClickMenu from '@/components/Common/rightClickMenu.vue'
+import { Widget } from '../Base/widget'
+import { EditData } from '../Base/EditData'
+import { WidgetConfig } from '../Base/WidgetConfig'
+import rightClickMenu from '../Common/rightClickMenu.vue'
 import {Component,Prop,Watch, Vue}from 'vue-property-decorator';
 
   @Component({
@@ -67,7 +59,8 @@ export default class LabelStatus extends Widget {
         parseUrl: '',
         url: this.config.data.url,
         index: this.refIndex,
-        isShowStateVlaue: false
+        isShowStateVlaue: false,
+        isSubscribe: false
       },
       props: {
         fontSize: 22,
@@ -88,23 +81,24 @@ export default class LabelStatus extends Widget {
 
 
     mounted(){
+
       //this.timer = setInterval(this.refresh, 1000);
-      this.$refs.RightClick.addEventListener('click', () => {
+      //this.timer = setInterval(this.refresh, 1000);
+      /*this.$refs.RightClick.addEventListener('click', () => {
         this.$refs.rightClickMenu.closeMenu()
-      });
-
+      });*/
 
     }
+    del () {
+      this.$emit('del', this.index)
+    }
 
-    refresh(){
-      console.log(this.sample)
-      this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL;
-      console.log("11"+this.sample.CFET2CORE_SAMPLE_VAL)
-      if(this.StatusValue == undefined)
-      {
-        this.StatusValue = "undefined";
+    /*refresh(){
+      if(this.EditData.edit.isSubscribe == false){
+        this.viewLoad(this.EditData.params.Args);
       }
-    }
+
+    }*/
 
     updateUI () {
       this.isShowPath = false
@@ -112,17 +106,16 @@ export default class LabelStatus extends Widget {
     }
 
     openMenu(e){
-      this.$refs.rightClickMenu.openMenu(e);
+      this.$refs.rightClickMenu.openMenu(e)
     }
 
     openWindows(){
-      console.log("opern")
       super.openWindows()
     }
 
 
     getConfig () {
-      super.getConfig()
+      return super.getConfig()
     }
 
     setConfig (setConfigData: [WidgetConfig,object],fragment:string) {
@@ -145,7 +138,7 @@ export default class LabelStatus extends Widget {
       await super.getData(url)
       this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL;
       console.log("11"+this.sample.CFET2CORE_SAMPLE_VAL)
-      if(this.StatusValue == undefined)
+      if(this.StatusValue === undefined)
       {
         this.StatusValue = "undefined";
       }
@@ -162,6 +155,7 @@ export default class LabelStatus extends Widget {
   /* constructor () {
       super(this.index, this.refIndex)
     } */
+
 }
 </script>
 
