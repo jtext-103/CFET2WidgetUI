@@ -160,6 +160,10 @@ export default class BoolState extends Widget {
     /* constructor () {
         super(this.index, this.refIndex)
       } */
+
+    parentUpdate(payload: UpdatePayload): void {
+      super.parentUpdate(payload)
+    }
 }
 </script>
 

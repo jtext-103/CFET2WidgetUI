@@ -21,6 +21,7 @@
     >
       <a :href="path" target="_blank">childrenPath:{{path}}</a>
     </div>
+    <rightClickMenu ref="rightClickMenu" @del="del" @openWindows="openWindows"></rightClickMenu>
 
   </div>
 </template>

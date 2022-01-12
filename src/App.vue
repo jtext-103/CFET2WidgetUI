@@ -134,11 +134,13 @@ import { Widget } from './components/Base/widget'
 import LabelStatus from './components/Status/LabelStatus'
 import rightClickMenu from '@/components/Common/rightClickMenu.vue'
 import Config from './components/Config/Config'
+import BoolConfig from './components/Config/BoolConfig'
 import Status from './components/Status/Status'
 import Grid from './components/Layout/Grid'
 import State from './components/State/State'
 import BoolState from './components/State/BoolState'
 import Method from './components/Method/Method'
+import VarBroadcast from './components/Broadcast/VarBroadcast'
 import Navigation from './components/Navigation/Navigation'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
@@ -157,7 +159,9 @@ import Navigation from './components/Navigation/Navigation'
       State,
       BoolState,
       Method,
-      Navigation
+      Navigation,
+      BoolConfig,
+      VarBroadcast
     }
   })
 
@@ -183,7 +187,9 @@ export default class App extends Vue {
       'State',
       'BoolState',
       'Method',
-      'Navigation'
+      'Navigation',
+      'BoolConfig',
+      'VarBroadcast'
     ];
 
     deleteWidget (index:number):void{

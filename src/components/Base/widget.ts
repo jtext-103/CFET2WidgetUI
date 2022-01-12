@@ -43,6 +43,8 @@ export class Widget extends Vue {
     },
     params: {
       PokedPath: '',
+      Args: {},
+      userInputData:this.userInputData
     }
   };
 
@@ -205,7 +207,7 @@ export class Widget extends Vue {
 
 
 
-    await this.getData(this.pathwithVar);
+    //await this.getData(this.pathwithVar);
 
   }
 
@@ -251,6 +253,39 @@ export class Widget extends Vue {
 
     ws.onclose = function(evt) {
       console.log("Connection closed");}
+  }
+
+  parentUpdate(payload: UpdatePayload): void {
+    if(Object.prototype.toString.call(this.EditData.params.userInputData) == '[object Map]'){
+      this.userInputData = this.strMapObjChange.strMapToObj(
+        this.EditData.params.userInputData);
+    }else{
+      this.userInputData = this.EditData.params.userInputData;
+    }
+    var temp = this.userInputData;
+    temp = this.strMapObjChange.objToStrMap(temp);
+    this.userInputData = temp;
+    console.log('!!!!!!!!!!!!!!!!!!!!!!')
+    console.log(this.userInputData);
+    this.userInputData.forEach((value , key) =>{
+      payload.variables.forEach((valueofpayload,keyofpayload)=>{
+        if(key == keyofpayload && ((this.userInputData.get(key) as string) != (payload.variables.get(keyofpayload) as string)))
+        {
+          this.userInputData.set(key,payload.variables.get(keyofpayload) as string);
+          console.log(this.userInputData);
+          this.EditData.params.shouldUpdate = true;
+          this.EditData.params.Args.variables = this.userInputData;
+          this.pathwithVar = this.pathProcessor.FillPathWithVar(
+            // this.config.data.userInputData,
+            this.userInputData,
+            this.config.data.url
+          );
+          //this.getData(this.pathwithVar);
+        }
+      });
+    });
+    this.EditData.params.userInputData = this.strMapObjChange.strMapToObj(this.userInputData);
+
   }
 
 

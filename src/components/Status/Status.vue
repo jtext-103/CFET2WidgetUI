@@ -119,6 +119,7 @@ export default class Status extends Widget {
 
     ParsingStateNum () {
       var StatusNum = parseFloat(this.StatusValue)
+      console.log(StatusNum)
       this.value = parseFloat((StatusNum - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[0] = 0
       this.gaugeTicks[1] = parseFloat((this.EditData.props.StateIndicatorFile.ll - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
@@ -127,6 +128,7 @@ export default class Status extends Widget {
       this.gaugeTicks[4] = parseFloat((this.EditData.props.StateIndicatorFile.hh - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[5] = 1
       this.gauge.options.percent = this.value
+      console.log(this.value)
       this.gauge.options.range = {
         ticks: this.gaugeTicks,
         color: ['red', 'yellow', 'green', 'yellow', 'red']
@@ -192,10 +194,16 @@ export default class Status extends Widget {
 
     async viewLoad (Args: UpdatePayload) {
       super.viewLoad(Args)
+      await this.getData(this.pathwithVar)
       this.ParsingStateNum()
-      if (typeof this.StatusValue === 'number') {
-        this.ParsingStateNum()
-      }
+      // if (typeof this.StatusValue === 'number') {
+      //  this.ParsingStateNum()
+      // }
+    }
+
+    parentUpdate (payload: UpdatePayload): void {
+      super.parentUpdate(payload)
+      this.viewLoad(this.EditData.params.Args)
     }
 }
 </script>

@@ -12,6 +12,7 @@
         <span style="margin: auto;">invoke</span>
       </button>
     </div>
+    <rightClickMenu ref="rightClickMenu" @del="del" @openWindows="openWindows"></rightClickMenu>
 
   </div>
 </template>
@@ -143,9 +144,13 @@ export default class Method extends Widget {
       )
       await this.invokeData(this.pathwithVar)
     }
+
     /* constructor () {
         super(this.index, this.refIndex)
       } */
+    parentUpdate (payload: UpdatePayload): void {
+      super.parentUpdate(payload)
+    }
 }
 </script>
 

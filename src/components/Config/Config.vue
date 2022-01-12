@@ -29,6 +29,7 @@ import Component from 'vue-class-component'
 import { Prop, Watch, Vue } from 'vue-property-decorator'
 import { Widget } from '../Base/widget'
 import { WidgetConfig } from '../Base/WidgetConfig'
+import { EditData } from '../Base/EditData'
 import rightClickMenu from '@/components/Common/rightClickMenu.vue'
 import { UpdatePayload } from '../Base/UpdatePayload'
 
@@ -58,7 +59,7 @@ export default class Config extends Widget {
       }
     };
 
-    EditData = {
+    EditData:EditData = {
       edit: {
         url: this.config.data.url,
         parseUrl: '',
@@ -107,8 +108,58 @@ export default class Config extends Widget {
       super.openWindows()
     }
 
+    pathPoke () {
+      this.config.data.url = this.EditData.edit.url
+      this.EditPathPoke = this.EditData.edit.url
+
+      var pokepath = this.EditData.edit.url
+      window.$axios.get(pokepath).then((response: { data: any; }) => {
+        console.log(response)
+        this.samplePoke(response.data)
+        console.log(response.data)
+        super.updateUI()
+      }).catch(err => {
+        console.log(err)
+        this.EditData.params.PokedPath = this.config.data.url
+        this.openWindows()
+      })
+    }
+
+    parentUpdate (payload: UpdatePayload): void {
+      this.userGetInputData = this.strMapObjChange.strMapToObj(
+        this.userGetInputData)
+      var temp = this.userGetInputData
+      temp = this.strMapObjChange.objToStrMap(temp)
+      this.userGetInputData = temp
+      this.userGetInputData.forEach((value, key) => {
+        payload.variables.forEach((valueofpayload, keyofpayload) => {
+          if (key === keyofpayload && ((this.userGetInputData.get(key) as string) !== (payload.variables.get(keyofpayload) as string))) {
+            this.userGetInputData.set(key, payload.variables.get(keyofpayload) as string)
+            this.EditData.params.shouldUpdate = true
+            this.EditData.params.Args.variables = this.userGetInputData
+            this.viewGetLoad(this.EditData.params.Args)
+          }
+        })
+      }); this.EditData.params.userInputData = this.strMapObjChange.strMapToObj(this.userGetInputData)
+
+      this.userSetInputData = this.strMapObjChange.strMapToObj(
+        this.userSetInputData)
+      temp = this.userSetInputData
+      temp = this.strMapObjChange.objToStrMap(temp)
+      this.userSetInputData = temp
+      this.userSetInputData.forEach((value, key) => {
+        payload.variables.forEach((valueofpayload, keyofpayload) => {
+          if (key === keyofpayload && ((this.userSetInputData.get(key) as string) !== (payload.variables.get(keyofpayload) as string))) {
+            this.userSetInputData.set(key, payload.variables.get(keyofpayload) as string)
+            this.viewSetLoad(this.EditData.params.Args)
+          }
+        })
+      })
+    }
+
     samplePoke (sample: any) {
       var samplePath = sample.CFET2CORE_SAMPLE_PATH
+      console.log(samplePath)
       var setpokedPath: string
       var getpokedPath: string
       // set
@@ -139,6 +190,7 @@ export default class Config extends Widget {
       if (count !== 0) {
         getpokedPath = getpokedPath.substring(0, getpokedPath.length - 1)
       }
+      console.log(getpokedPath)
       this.config.data.get.url = getpokedPath
 
       count = 0
@@ -186,6 +238,7 @@ export default class Config extends Widget {
     }
 
     async getData (url: string) {
+      console.log(url)
       await super.getData(url)
       this.setUserData = this.sample.CFET2CORE_SAMPLE_VAL
       if (this.setUserData === undefined) {

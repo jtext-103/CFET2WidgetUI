@@ -43,6 +43,7 @@ export default class LabelStatus extends Widget {
     StatusValue: string = "undefined";
     sample : any;
     timer?: number;
+    userInputData = new Map<string, string>();
 
     config:WidgetConfig = {
       WidgetComponentName: 'LabelStatus',
@@ -149,12 +150,18 @@ export default class LabelStatus extends Widget {
     }
 
 
-    viewLoad (Args: UpdatePayload) {
+    async viewLoad (Args: UpdatePayload) {
       super.viewLoad(Args)
+      await this.getData(this.pathwithVar)
     }
   /* constructor () {
       super(this.index, this.refIndex)
     } */
+
+    parentUpdate(payload: UpdatePayload): void {
+      super.parentUpdate(payload)
+      this.viewLoad(this.EditData.params.Args)
+    }
 
 }
 </script>
