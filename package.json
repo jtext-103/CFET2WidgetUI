@@ -17,6 +17,8 @@
     "babel-polyfill": "^6.26.0",
     "buefy": "^0.8.12",
     "core-js": "^3.6.5",
+    "plotly.js": "^1.52.2",
+    "plotly.js-dist": "^1.52.2",
     "pubsub-js": "^1.8.0",
     "qs": "latest",
     "vue": "^2.6.11",

@@ -52,6 +52,7 @@ export default class Status extends Widget {
     activeColor:string = '';
     gaugeColor:string[] = ['red', 'yellow', 'green'];
     StatusValue: string = 'undefined';
+    timer?: number;
     config: WidgetConfig = {
       WidgetComponentName: 'Status',
       data: {
@@ -61,7 +62,7 @@ export default class Status extends Widget {
       }
     };
 
-    EditData = {
+    EditData:EditData = {
       edit: {
         type: 'status',
         parseUrl: '',
@@ -109,7 +110,7 @@ export default class Status extends Widget {
       })
 
       this.gauge.render()
-      // this.timer = setInterval(this.refresh, 1000);
+      this.timer = setInterval(this.refresh, 1000)
     }
 
     del () {
@@ -148,6 +149,12 @@ export default class Status extends Widget {
         this.activeColor = 'red'
       } else {
         this.activeColor = 'black'
+      }
+    }
+
+    refresh () {
+      if (this.EditData.edit.isSubscribe === false) {
+        this.viewLoad(this.EditData.params.Args)
       }
     }
 

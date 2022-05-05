@@ -217,22 +217,22 @@ export default class WindowsApp extends Vue {
     EditData:any={};
 
     created () {
-      /* var localURL = window.location.hash;
-        if (localURL.indexOf("?") != -1) {
-            //var url = localURL.substr(1); //for test
-            var url = localURL.substr(3); //for build
-            console.log(url);
-            var httpData = unescape(url); // for build
-            console.log(httpData);
-            //var jsondata = decodeURIComponent(httpData);
-            //console.log(jsondata);
-            //var jsondata = decodeURI(httpData); //for build
-            var data = JSON.parse(httpData);
-            console.log(data);
-            this.EditData = data;
-        } */
+      var localURL = window.location.hash
+      if (localURL.indexOf('?') !== -1) {
+        // var url = localURL.substr(1); //for test
+        var url = localURL.substr(3) // for build
+        console.log(url)
+        var httpData = unescape(url) // for build
+        console.log(httpData)
+        // var jsondata = decodeURIComponent(httpData);
+        // console.log(jsondata);
+        // var jsondata = decodeURI(httpData); //for build
+        var data = JSON.parse(httpData)
+        console.log(data)
+        this.EditData = data
+      }
 
-      var localURL = location.search
+      /* var localURL = location.search
       if (localURL.indexOf('?') !== -1) {
         var url = localURL.substr(1)
         var httpData = unescape(url)
@@ -241,7 +241,7 @@ export default class WindowsApp extends Vue {
         var data = JSON.parse(httpData)
         console.log(data)
         this.EditData = data
-      }
+      } */
     }
 
     mounted () {

@@ -83,7 +83,7 @@ export default class LabelStatus extends Widget {
 
     mounted(){
 
-      //this.timer = setInterval(this.refresh, 1000);
+      this.timer = setInterval(this.refresh, 1000);
       //this.timer = setInterval(this.refresh, 1000);
       /*this.$refs.RightClick.addEventListener('click', () => {
         this.$refs.rightClickMenu.closeMenu()
@@ -94,12 +94,11 @@ export default class LabelStatus extends Widget {
       this.$emit('del', this.index)
     }
 
-    /*refresh(){
+    refresh(){
       if(this.EditData.edit.isSubscribe == false){
         this.viewLoad(this.EditData.params.Args);
       }
-
-    }*/
+    }
 
     updateUI () {
       this.isShowPath = false
@@ -136,9 +135,10 @@ export default class LabelStatus extends Widget {
     }
 
     async getData (url: string) {
+      console.log('labelurl')
+      console.log(url)
       await super.getData(url)
       this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL;
-      console.log("11"+this.sample.CFET2CORE_SAMPLE_VAL)
       if(this.StatusValue === undefined)
       {
         this.StatusValue = "undefined";

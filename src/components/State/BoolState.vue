@@ -89,7 +89,7 @@ export default class BoolState extends Widget {
 
     mounted () {
       // 恢复一秒一次，记得判断ws
-      // this.timer = setInterval(this.refresh, 1000);
+      this.timer = setInterval(this.refresh, 1000);
 
     }
 
@@ -97,12 +97,12 @@ export default class BoolState extends Widget {
       this.$emit('del', this.index)
     }
 
-    /* refresh(){
+    refresh(){
       if(this.EditData.edit.isSubscribe == false){
         this.viewLoad(this.EditData.params.Args);
       }
 
-    } */
+    }
 
     colourViewLoad () {
       this.activeColor = this.StateIndicator[this.StatusValue]
@@ -153,8 +153,9 @@ export default class BoolState extends Widget {
       }
     }
 
-    viewLoad (Args: UpdatePayload) {
+    async viewLoad (Args: UpdatePayload) {
       super.viewLoad(Args)
+      await this.getData(this.pathwithVar)
       this.colourViewLoad()
     }
     /* constructor () {
@@ -163,6 +164,7 @@ export default class BoolState extends Widget {
 
     parentUpdate(payload: UpdatePayload): void {
       super.parentUpdate(payload)
+      this.viewLoad(this.EditData.params.Args)
     }
 }
 </script>

@@ -48,6 +48,7 @@ export default class BoolConfig extends Widget {
   setConfigValue: any = '';
   sample : any;
   setLabel:string = '';
+  timer?: number;
   switchValue:boolean = false;
   checkActiveSample:boolean = true;
   getPathwithVar: string = '';
@@ -87,6 +88,10 @@ export default class BoolConfig extends Widget {
     }
   };
 
+  mounted () {
+    this.timer = setInterval(this.getrefresh, 1000)
+  }
+
   openMenu (e) {
     this.$refs.rightClickMenu.openMenu(e)
   }
@@ -99,7 +104,10 @@ export default class BoolConfig extends Widget {
     this.$emit('del', this.index)
   }
 
-  parentUpdate (payload: UpdatePayload): void {
+  /* parentUpdate (payload: UpdatePayload): void {
+    if (this.userSetInputData.size === 0) {
+      this.setInputData(this.EditData.params.Args)
+    }
     this.userGetInputData = this.strMapObjChange.strMapToObj(
       this.userGetInputData)
     var temp = this.userGetInputData
@@ -125,11 +133,15 @@ export default class BoolConfig extends Widget {
       payload.variables.forEach((valueofpayload, keyofpayload) => {
         if (key === keyofpayload && ((this.userSetInputData.get(key) as string) !== (payload.variables.get(keyofpayload) as string))) {
           this.userSetInputData.set(key, payload.variables.get(keyofpayload) as string)
-          this.viewSetLoad(this.EditData.params.Args)
+          if (this.setLabel === keyofpayload) {
+            this.getConfigValue = payload.variables.get(keyofpayload) as string
+            this.updateSwitchValue()
+          }
+          this.viewSetLoad(this.EditData.params.Args,false)
         }
       })
     })
-  }
+  } */
 
   pathPoke () {
     this.config.data.url = this.EditData.edit.url
@@ -149,8 +161,9 @@ export default class BoolConfig extends Widget {
   }
 
   updateSwitchValue () {
-    if (Object.prototype.toString.call(this.getConfigValue) === '[object Boolean]' || this.getConfigValue === true || this.getConfigValue === false || this.getConfigValue === 0 || this.getConfigValue === 1) {
+    if (Object.prototype.toString.call(this.getConfigValue) === '[object Boolean]' || this.getConfigValue === true || this.getConfigValue === false || this.getConfigValue === 0 || this.getConfigValue === 1 || this.getConfigValue === '0' || this.getConfigValue === '1') {
       this.checkActiveSample = false
+
       if (Object.prototype.toString.call(this.getConfigValue) === '[object String]') {
         if (this.getConfigValue === '1') {
           this.switchValue = true
@@ -168,10 +181,38 @@ export default class BoolConfig extends Widget {
   }
 
   setConfig (setConfigData: [WidgetConfig, object], fragment:string) {
+    this.config = setConfigData[0]
+    this.EditData = setConfigData[1]
+
+    if (this.EditData.edit.url.search('startpath') !== -1) { this.replaceStartPath(fragment) }
+    if (this.EditData.edit.parseUrl.search('startpath') !== -1) { this.replaceStartPath(fragment) }
     if (this.EditData.edit.setConfigUrl.search('startpath') !== -1) { this.replaceStartPath(fragment) }
+
+    var temp = this.EditData.params.tempUserInputData
+    temp = JSON.parse(JSON.stringify(temp))
+    temp = this.strMapObjChange.objToStrMap(temp)
+    // this.EditData.params.tempUserInputData = temp;
     this.setLabel = this.EditData.params.setLabel
-    super.setConfig(setConfigData, fragment)
-    // this.pathPoke()
+
+    var Args: UpdatePayload = {
+      action: this.EditData.params.action,
+      variables: temp,
+      target: ['self']
+    }
+
+    this.EditData.params.Args = Args
+    this.pathPoke()
+
+    this.viewLoad(Args)
+  }
+
+  replaceStartPath (startPath: string): void {
+    this.config.data.get.url = this.config.data.get.url.replace('$startpath$', startPath)
+    this.config.data.set.url = this.config.data.set.url.replace('$startpath$', startPath)
+    this.config.data.url = this.config.data.url.replace('$startpath$', startPath)
+    this.EditData.edit.url = this.EditData.edit.url.replace('$startpath$', startPath)
+    this.EditData.edit.parseUrl = this.EditData.edit.parseUrl.replace('$startpath$', startPath)
+    this.EditData.edit.setConfigUrl = this.EditData.edit.setConfigUrl.replace('$startpath$', startPath)
   }
 
   samplePoke (sample: any) {
@@ -254,6 +295,7 @@ export default class BoolConfig extends Widget {
 
   async getData (url: string) {
     await super.getData(url)
+    console.log('this')
     this.getConfigValue = this.sample.CFET2CORE_SAMPLE_VAL
     if (this.getConfigValue === undefined) {
       this.getConfigValue = 'undefined'
@@ -294,37 +336,38 @@ export default class BoolConfig extends Widget {
     await this.getData(this.getPathwithVar)
   }
 
-  async viewSetLoad (Args: UpdatePayload, checkParent:boolean) {
-    console.log('set')
-    if (checkParent === false) {
-      console.log('iii')
-      if (this.EditData.edit.parseUrl !== '') {
-        this.config.data.set.url = this.EditData.edit.setConfigUrl
-        console.log(this.config.data.set.url)
-        this.setLabel = this.EditData.edit.setLabel
-        // console.log(this.setLabel);
-        // this.setUserData = Args.variables.setLabel;
-      }
-      // this.config.data.userInputData = Args.variables;
+  setInputData (Args: UpdatePayload) {
+    if (this.EditData.edit.parseUrl !== '') {
+      this.config.data.set.url = this.EditData.edit.setConfigUrl
+      console.log(this.config.data.set.url)
+      this.setLabel = this.EditData.edit.setLabel
+      // console.log(this.setLabel);
+      // this.setUserData = Args.variables.setLabel;
+    }
+    // this.config.data.userInputData = Args.variables;
 
-      if (Object.prototype.toString.call(Args.variables) === '[object Undefined]') {
-        if (Object.prototype.toString.call(this.getConfigValue) === '[object Number]' || this.getConfigValue === 0 || this.getConfigValue === 1) {
-          const switchTempValue = Number(this.switchValue)
-          this.userSetInputData.set(this.setLabel, switchTempValue)
-        } else {
-          this.userSetInputData.set(this.setLabel, this.switchValue)
-        }
+    if (Object.prototype.toString.call(Args.variables) === '[object Undefined]') {
+      if (Object.prototype.toString.call(this.getConfigValue) !== '[object Number]' || this.getConfigValue === 0 || this.getConfigValue === 1) {
+        const switchTempValue = Number(this.switchValue)
+        this.userSetInputData.set(this.setLabel, switchTempValue)
       } else {
-        if (Object.prototype.toString.call(this.getConfigValue) === '[object Number]' || this.getConfigValue === 0 || this.getConfigValue === 1) {
-          const switchTempValue = Number(this.switchValue)
-          this.userSetInputData = Args.variables
-          this.userSetInputData.set(this.setLabel, switchTempValue)
-        } else {
-          this.userSetInputData = Args.variables
-          this.userSetInputData.set(this.setLabel, this.switchValue)
-        }
+        this.userSetInputData.set(this.setLabel, this.switchValue)
       }
-      console.log(this.setPathwithVar)
+    } else {
+      if (Object.prototype.toString.call(this.getConfigValue) !== '[object Number]' || this.getConfigValue === 0 || this.getConfigValue === 1) {
+        const switchTempValue = Number(this.switchValue)
+        this.userSetInputData = Args.variables
+        this.userSetInputData.set(this.setLabel, switchTempValue)
+      } else {
+        this.userSetInputData = Args.variables
+        this.userSetInputData.set(this.setLabel, this.switchValue)
+      }
+    }
+  }
+
+  async viewSetLoad (Args: UpdatePayload, checkParent:boolean) {
+    if (checkParent === false) {
+      this.setInputData(Args)
 
       this.setPathwithVar = this.pathProcessor.FillPathWithVar(this.userSetInputData, this.config.data.set.url)
       console.log(this.setPathwithVar)

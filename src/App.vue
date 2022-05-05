@@ -142,6 +142,7 @@ import BoolState from './components/State/BoolState'
 import Method from './components/Method/Method'
 import VarBroadcast from './components/Broadcast/VarBroadcast'
 import Navigation from './components/Navigation/Navigation'
+import WaveView from './components/WaveView/WaveView.vue'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
@@ -161,7 +162,8 @@ import Navigation from './components/Navigation/Navigation'
       Method,
       Navigation,
       BoolConfig,
-      VarBroadcast
+      VarBroadcast,
+      WaveView
     }
   })
 
@@ -189,7 +191,8 @@ export default class App extends Vue {
       'Method',
       'Navigation',
       'BoolConfig',
-      'VarBroadcast'
+      'VarBroadcast',
+      'WaveView'
     ];
 
     deleteWidget (index:number):void{
@@ -336,12 +339,12 @@ export default class App extends Vue {
               })
             } else {
               var dataURL = fragment
-              this.dataAccess(dataURL)
+              // thing
+              // this.dataAccess(dataURL)
             }
           }).catch(err => {
-            alert(err)
             var dataURL = fragment
-            this.dataAccess(dataURL)
+            // this.dataAccess(dataURL)
             console.log(dataURL)
           })
       }
@@ -350,6 +353,7 @@ export default class App extends Vue {
         console.log('PubSub.subscribe("VarBroadcast')
         // 接收到消息调用全部widget的parentUpdate函数
         for (var widget of this.widgetList) {
+          console.log(this.$refs[widget.ref]);
           ((this.$refs[widget.ref] as Array<Widget>)[0] as Widget).parentUpdate(Args)
         }
       })
@@ -363,10 +367,12 @@ export default class App extends Vue {
         this.$refs[EditData.edit.index][0].viewLoad(EditData.params.Args)
         // wava
       } else {
-        this.$refs[EditData.edit.index][0].$children[1].EditData = EditData
-        this.$refs[EditData.edit.index][0].$children[1].pathPoke()
-        this.$refs[EditData.edit.index][0].$children[1].pathPokeTime()
-        this.$refs[EditData.edit.index][0].$children[1].viewLoad(EditData.params.Args)
+        console.log('1111')
+        console.log(this.$refs[EditData.edit.index])
+        this.$refs[EditData.edit.index][0].EditData = EditData
+        this.$refs[EditData.edit.index][0].pathPoke()
+        this.$refs[EditData.edit.index][0].pathPokeTime()
+        this.$refs[EditData.edit.index][0].viewLoad(EditData.params.Args)
       }
     }
 
@@ -446,7 +452,7 @@ export default class App extends Vue {
     }
 
     update (payload: UpdatePayload) {
-      var wid;
+      var wid
       for (wid of this.widgetList) {
         (this.$refs[wid.ref] as Widget).parentUpdate(payload)
       }

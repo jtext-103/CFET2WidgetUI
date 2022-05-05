@@ -51,6 +51,7 @@ export default class Method extends Widget {
       false: 'red'
     };
 
+
     config: WidgetConfig = {
       WidgetComponentName: 'Method',
       data: {
@@ -105,7 +106,7 @@ export default class Method extends Widget {
 
     setConfig (setConfigData: [WidgetConfig, object], fragment:string) {
       super.setConfig(setConfigData, fragment)
-      this.curArg = super.EditData.params.Args
+      this.curArg = this.EditData.params.Args
     }
 
     pathPoke () {
@@ -142,14 +143,17 @@ export default class Method extends Widget {
         this.userInputData,
         this.config.data.url
       )
+
       await this.invokeData(this.pathwithVar)
     }
 
     /* constructor () {
         super(this.index, this.refIndex)
       } */
+
     parentUpdate (payload: UpdatePayload): void {
       super.parentUpdate(payload)
+      this.viewLoad(this.EditData.params.Args)
     }
 }
 </script>

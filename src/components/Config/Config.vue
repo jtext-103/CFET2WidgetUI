@@ -126,6 +126,9 @@ export default class Config extends Widget {
     }
 
     parentUpdate (payload: UpdatePayload): void {
+      if (this.userSetInputData.size === 0) {
+        this.setInputData(this.EditData.params.Args)
+      }
       this.userGetInputData = this.strMapObjChange.strMapToObj(
         this.userGetInputData)
       var temp = this.userGetInputData
@@ -151,6 +154,9 @@ export default class Config extends Widget {
         payload.variables.forEach((valueofpayload, keyofpayload) => {
           if (key === keyofpayload && ((this.userSetInputData.get(key) as string) !== (payload.variables.get(keyofpayload) as string))) {
             this.userSetInputData.set(key, payload.variables.get(keyofpayload) as string)
+            if (this.setLabel === keyofpayload) {
+              this.setUserData = payload.variables.get(keyofpayload) as string
+            }
             this.viewSetLoad(this.EditData.params.Args)
           }
         })
@@ -210,6 +216,8 @@ export default class Config extends Widget {
           this.setLabel = key
           this.EditData.params.setLabel = key
           this.config.data.set.url = setpokedPath + key + '=$' + key + '$'
+          console.log('setf')
+          console.log(this.setLabel)
         }
       })
 
@@ -253,7 +261,7 @@ export default class Config extends Widget {
           this.setUserData = response.data.CFET2CORE_SAMPLE_VAL
           console.log(this.setUserData)
           if (response.data.CFET2CORE_SAMPLE_ISVALID === true) {
-            alert('success')
+
           }
         })
     }
@@ -281,7 +289,7 @@ export default class Config extends Widget {
       await this.getData(this.getPathwithVar)
     }
 
-    async viewSetLoad (Args: UpdatePayload) {
+    setInputData (Args: UpdatePayload) {
       if (this.EditData.edit.parseUrl !== '') {
         this.config.data.set.url = this.EditData.edit.setConfigUrl
         this.setLabel = this.EditData.edit.setLabel
@@ -289,13 +297,17 @@ export default class Config extends Widget {
       if (Object.prototype.toString.call(Args.variables) === '[object Undefined]') {
         this.userSetInputData.set(this.setLabel, this.setUserData)
       } else {
-        console.log('in')
         this.userSetInputData = Args.variables
         this.userSetInputData.set(this.setLabel, this.setUserData)
         console.log(this.userSetInputData)
       }
+    }
+
+    async viewSetLoad (Args: UpdatePayload) {
+      this.setInputData(Args)
 
       this.setPathwithVar = this.pathProcessor.FillPathWithVar(this.userSetInputData, this.config.data.set.url)
+
       await this.setData(this.setPathwithVar)
     }
 
@@ -304,10 +316,40 @@ export default class Config extends Widget {
     }
 
     setConfig (setConfigData: [WidgetConfig, object], fragment:string) {
+      this.config = setConfigData[0]
+      this.EditData = setConfigData[1]
+
+      if (this.EditData.edit.url.search('startpath') !== -1) { this.replaceStartPath(fragment) }
+      if (this.EditData.edit.parseUrl.search('startpath') !== -1) { this.replaceStartPath(fragment) }
       if (this.EditData.edit.setConfigUrl.search('startpath') !== -1) { this.replaceStartPath(fragment) }
+
+      var temp = this.EditData.params.tempUserInputData
+      temp = JSON.parse(JSON.stringify(temp))
+      temp = this.strMapObjChange.objToStrMap(temp)
+      // this.EditData.params.tempUserInputData = temp;
+
+      // console.log(this.EditData.params.tempUserInputData);
       this.setLabel = this.EditData.params.setLabel
-      super.setConfig(setConfigData, fragment)
+
+      var Args: UpdatePayload = {
+        action: this.EditData.params.action,
+        variables: temp,
+        target: ['self']
+      }
+      this.EditData.params.Args = Args
+      // try confid串线
+      this.pathPoke()
+      this.viewLoad(Args)
       // this.pathPoke()
+    }
+
+    replaceStartPath (startPath: string): void {
+      this.config.data.get.url = this.config.data.get.url.replace('$startpath$', startPath)
+      this.config.data.set.url = this.config.data.set.url.replace('$startpath$', startPath)
+      this.config.data.url = this.config.data.url.replace('$startpath$', startPath)
+      this.EditData.edit.url = this.EditData.edit.url.replace('$startpath$', startPath)
+      this.EditData.edit.parseUrl = this.EditData.edit.parseUrl.replace('$startpath$', startPath)
+      this.EditData.edit.setConfigUrl = this.EditData.edit.setConfigUrl.replace('$startpath$', startPath)
     }
 
     del () {

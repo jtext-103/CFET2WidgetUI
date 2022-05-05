@@ -91,19 +91,19 @@
 
     mounted(){
       //恢复一秒一次，记得判断ws
-      //this.timer = setInterval(this.refresh, 1000);
+      this.timer = setInterval(this.refresh, 1000);
 
     }
     del () {
       this.$emit('del', this.index)
     }
 
-    /*refresh(){
+    refresh(){
       if(this.EditData.edit.isSubscribe == false){
         this.viewLoad(this.EditData.params.Args);
       }
 
-    }*/
+    }
 
     colourViewLoad(){
       var stateFile = JSON.parse(this.EditData.props.StateFile);
@@ -138,6 +138,7 @@
 
     setConfig (setConfigData: [WidgetConfig,object],fragment:string) {
       super.setConfig(setConfigData, fragment)
+      console.log(this.EditData)
     }
 
     pathPoke () {
@@ -154,18 +155,24 @@
     }
 
     async getData (url: string) {
+      console.log('print url')
+      console.log(url)
       await super.getData(url)
+      console.log(this.sample.CFET2CORE_SAMPLE_VAL)
       this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL;
       if(this.StatusValue === undefined)
       {
         this.StatusValue = "undefined";
       }
+      console.log(11111111)
+      console.log(this.StatusValue)
     }
 
 
 
-    viewLoad (Args: UpdatePayload) {
+    async viewLoad (Args: UpdatePayload) {
       super.viewLoad(Args)
+      await this.getData(this.pathwithVar)
       this.colourViewLoad()
     }
     /* constructor () {
@@ -174,6 +181,7 @@
 
     parentUpdate(payload: UpdatePayload): void {
       super.parentUpdate(payload)
+      this.viewLoad(this.EditData.params.Args)
     }
 
   }

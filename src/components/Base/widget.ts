@@ -81,29 +81,35 @@ export class Widget extends Vue {
     this.config = setConfigData[0];
     // @ts-ignore
     this.EditData = setConfigData[1];
+    console.log(this.EditData)
 
-    if(this.EditData.edit.url.search("startpath") != -1 ){this.replaceStartPath(fragment)}
-    if(this.EditData.edit.parseUrl.search("startpath") != -1 ){this.replaceStartPath(fragment)}
+    if(this.WidgetComponentName !== 'Grid') {
+      if (this.EditData.edit.url.search("startpath") != -1) {
+        this.replaceStartPath(fragment)
+      }
+      if (this.EditData.edit.parseUrl.search("startpath") != -1) {
+        this.replaceStartPath(fragment)
+      }
 
+      var temp = this.EditData.params.tempUserInputData;
+      //temp = unescape(temp);
+      //console.log(temp);
+      temp = JSON.parse(JSON.stringify(temp));
+      temp = this.strMapObjChange.objToStrMap(temp);
+      //this.EditData.params.tempUserInputData = temp;
+      console.log(this.EditData)
+      console.log(temp)
 
-    var temp = this.EditData.params.tempUserInputData;
-    //temp = unescape(temp);
-    //console.log(temp);
-    temp = JSON.parse(JSON.stringify(temp));
-    temp = this.strMapObjChange.objToStrMap(temp);
-    //this.EditData.params.tempUserInputData = temp;
+      var Args: UpdatePayload = {
+        action: this.EditData.params.action,
+        variables: temp,
+        target: ["self"]
+      };
 
-
-    var Args: UpdatePayload = {
-      action: this.EditData.params.action,
-      variables: temp,
-      target: ["self"]
-    };
-
-    this.EditData.params.Args = Args;
-
-    if(this.WidgetComponentName !== 'Method'){
-      this.viewLoad(Args);
+      this.EditData.params.Args = Args;
+      if(this.WidgetComponentName !== 'Method'){
+        this.viewLoad(Args);
+      }
     }
 
   }
@@ -265,8 +271,7 @@ export class Widget extends Vue {
     var temp = this.userInputData;
     temp = this.strMapObjChange.objToStrMap(temp);
     this.userInputData = temp;
-    console.log('!!!!!!!!!!!!!!!!!!!!!!')
-    console.log(this.userInputData);
+
     this.userInputData.forEach((value , key) =>{
       payload.variables.forEach((valueofpayload,keyofpayload)=>{
         if(key == keyofpayload && ((this.userInputData.get(key) as string) != (payload.variables.get(keyofpayload) as string)))
