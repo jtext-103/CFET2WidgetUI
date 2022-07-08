@@ -218,12 +218,12 @@ export default class App extends Vue {
       this.isShowRes = true
       const refactorList = document.getElementsByClassName('refactor')
       console.log(refactorList)
-      for (var i = 0; i < refactorList.length; i++) {
-        // refactorList[i].classList.add("vue-draggable-handle");
-        // refactorList[i].classList.add("vue-resizable-handle");
-
-        refactorList[i].style.backgroundColor = 'rgba(238,238,238,0.89)'
-      }
+      // for (var i = 0; i < refactorList.length; i++) {
+      //   // refactorList[i].classList.add("vue-draggable-handle");
+      //   // refactorList[i].classList.add("vue-resizable-handle");
+      //
+      //   refactorList[i].style.backgroundColor = 'rgba(238,238,238,0.89)'
+      // }
     }
 
     getSchemas (schemas:any[]) {
@@ -283,7 +283,7 @@ export default class App extends Vue {
           this.isShowDrag = false
           this.isShowRes = false
           // refactorList[i].classList.remove("vue-resizable-handle");
-          refactorList[i].style.backgroundColor = 'white'
+          // refactorList[i].style.backgroundColor = 'white'
         }
       }
 
