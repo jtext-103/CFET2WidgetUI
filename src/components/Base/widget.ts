@@ -1,4 +1,4 @@
-import { Vue } from 'vue-property-decorator';
+import { Vue ,Component,Prop,Watch, Vue} from 'vue-property-decorator';
 import { EditData } from './EditData';
 import { WidgetConfig } from './WidgetConfig';
 import * as webpack from "webpack";
@@ -6,7 +6,7 @@ import StrMapObjChange from "./StrMapObjChange";
 import PathProcessor from "./PathProcessor";
 import { UpdatePayload } from "./UpdatePayload";
 import axios from "../../axios/index.js";
-import {Component,Prop,Watch, Vue}from 'vue-property-decorator';
+
 
 export class Widget extends Vue {
 
@@ -19,11 +19,11 @@ export class Widget extends Vue {
   WidgetComponentName = '';
   pathProcessor = new PathProcessor();
   strMapObjChange = new StrMapObjChange();
-  EditPathPoke : string =  '';
+  EditPathPoke : string = '';
   sample : any;
   userInputData = new Map<string, string>();
-  pathwithVar: string = "";
-  StatusValue: string = "undefined";
+  pathwithVar: string = '';
+  StatusValue: string = 'undefined';
 
 
   public config : WidgetConfig = {
@@ -32,7 +32,8 @@ export class Widget extends Vue {
       url: ''
     }
   };
-  public EditData : EditData = {
+
+  public EditData : object = {
     edit: {
       type: '',
       parseUrl: '',
@@ -50,12 +51,12 @@ export class Widget extends Vue {
 
   isShowPath: boolean = false;
 
-  /*public del(index:number){
+  /* public del(index:number){
     this.$emit('del', index);
-  }*/
+  } */
 
 
-  public openWindows(){
+  public openWindows (){
     var fragment = window.location.origin;
     var JsonData = JSON.stringify(this.EditData);
     var httpData = encodeURIComponent(JsonData);
@@ -64,10 +65,10 @@ export class Widget extends Vue {
     window.open(url+httpData, "WidgetWindow",'height=400, width=800, top=200, left=400, toolbar=no');
   }
 
-  public updateUI() {
+  public updateUI () {
     this.EditData.params.PokedPath = this.config.data.url;
     this.EditData.edit.url = this.config.data.url;
-    this.openWindows();
+    this.openWindows()
   }
 
   public getConfig(): [WidgetConfig, object] {
@@ -79,7 +80,6 @@ export class Widget extends Vue {
   public setConfig(setConfigData: [WidgetConfig,object],fragment:string): void {
 
     this.config = setConfigData[0];
-    // @ts-ignore
     this.EditData = setConfigData[1];
     console.log(this.EditData)
 

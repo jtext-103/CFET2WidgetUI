@@ -42,7 +42,14 @@
 
         <div class="navbar-end uploadlocal">
           <div class="navbar-item">
-
+            <div class="field">
+              <div class="control">
+                <!--                <input class="input" @keydown.enter="setBackground" placeholder="background url">-->
+                <button class="button is-primary is-light" @click="setBackground">background url</button>
+              </div>
+            </div>
+          </div>
+          <div class="navbar-item">
             <div class="file has-name is-right is-fullwidth " id="file"
                  @change="loadTextFromFile">
               <label class="file-label" style="position: relative;left: 112px;">
@@ -69,7 +76,8 @@
 
     </nav>
 
-    <div id="appLeftClick" style="min-height: 100vh;">
+      <div id="appLeftClick" :style="{background: 'url('+ backgroundUrl +')'+'no-repeat center'}"
+           style="min-height: 100vh; background-attachment: fixed;background-size: 100% 100%">
 
       <grid-layout
         :layout.sync="widgetList"
@@ -179,6 +187,7 @@ export default class App extends Vue {
     isShowDrag = false;
     isShowRes = false;
     fragment = '';
+    backgroundUrl = '';
 
     // when add more available widgets add its name here
     availableWidgets = [
@@ -392,6 +401,7 @@ export default class App extends Vue {
       var widgetConfigList = new AllWidgetConfig()
       widgetConfigList.widgetList = this.widgetList
       widgetConfigList.currentRef = this.lastWidgetIndex.toString()
+      widgetConfigList.backgroundUrl = this.backgroundUrl
       return widgetConfigList
     }
 
@@ -416,12 +426,17 @@ export default class App extends Vue {
         )
         this.widgetList = widgets.widgetList
         this.lastWidgetIndex = Number(widgets.currentRef)
+        this.backgroundUrl = widgets.backgroundUrl
         this.$forceUpdate()
         Vue.nextTick(() => {
           // changed here
           this.importActiveWidgetList(this.fragment)
         })
       }
+    }
+
+    setBackground () {
+      this.backgroundUrl = prompt('please input background url.')
     }
 
     saveWidgetList (): void {

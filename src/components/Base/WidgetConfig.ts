@@ -7,4 +7,5 @@ export interface WidgetConfig {
 export class AllWidgetConfig {
   public currentRef?: string;
   public widgetList: WidgetRef[] = [];
+  public backgroundUrl?: string;
 }

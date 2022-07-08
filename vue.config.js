@@ -15,7 +15,7 @@ module.exports = {
   },
   productionSourceMap: false,
 
-  outputDir: '/Users/igem/Desktop/华科/',
+  outputDir: 'D:\\CFET2WidgetUIZyz-output',
   devServer: {
     proxy: {
       '/': {
