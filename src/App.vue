@@ -45,7 +45,7 @@
             <div class="field">
               <div class="control">
                 <!--                <input class="input" @keydown.enter="setBackground" placeholder="background url">-->
-                <button class="button is-primary is-light" @click="setBackground">background url</button>
+                <button class="button is-primary is-light" @click="setBackground">set background</button>
               </div>
             </div>
           </div>
@@ -76,8 +76,8 @@
 
     </nav>
 
-      <div id="appLeftClick" :style="{background: 'url('+ backgroundUrl +')'+'no-repeat center'}"
-           style="min-height: 100vh; background-attachment: fixed;background-size: 100% 100%">
+    <div id="appLeftClick" :style="{background: 'url('+ backgroundUrl +')'+'no-repeat center / ' + backgroundWidth + backgroundHeight}"
+         style="min-height: 100vh; background-attachment: fixed;">
 
       <grid-layout
         :layout.sync="widgetList"
@@ -188,6 +188,8 @@ export default class App extends Vue {
     isShowRes = false;
     fragment = '';
     backgroundUrl = '';
+    backgroundWidth = 0;
+    backgroundHeight = 0;
 
     // when add more available widgets add its name here
     availableWidgets = [
@@ -402,6 +404,8 @@ export default class App extends Vue {
       widgetConfigList.widgetList = this.widgetList
       widgetConfigList.currentRef = this.lastWidgetIndex.toString()
       widgetConfigList.backgroundUrl = this.backgroundUrl
+      widgetConfigList.backgroundWidth = this.backgroundWidth
+      widgetConfigList.backgroundHeight = this.backgroundHeight
       return widgetConfigList
     }
 
@@ -427,6 +431,8 @@ export default class App extends Vue {
         this.widgetList = widgets.widgetList
         this.lastWidgetIndex = Number(widgets.currentRef)
         this.backgroundUrl = widgets.backgroundUrl
+        this.backgroundWidth = widgets.backgroundWidth
+        this.backgroundHeight = widgets.backgroundHeight
         this.$forceUpdate()
         Vue.nextTick(() => {
           // changed here
@@ -436,7 +442,12 @@ export default class App extends Vue {
     }
 
     setBackground () {
-      this.backgroundUrl = prompt('please input background url.')
+      const url = prompt('please input background url.')
+      const width = prompt('please input background width(%)')
+      const height = prompt('please input background height(%)')
+      this.backgroundUrl = url
+      this.backgroundWidth = width + '%'
+      this.backgroundHeight = height + '%'
     }
 
     saveWidgetList (): void {
