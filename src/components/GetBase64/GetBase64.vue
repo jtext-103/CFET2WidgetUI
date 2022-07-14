@@ -1,19 +1,7 @@
 <template>
-  <div class="container" style="padding-bottom: 30px;padding-right: 30px;margin-top: 30px;" >
-
-    <div class="columns content " v-bind:class="EditData.props.titleSize" style="margin-bottom: 0px;padding-left: 10px;">
-      <div class="column content-table-cell-heading-color is-narrow" style="margin: 0px;padding: 0px;">
-        <h3>{{EditData.props.title}}</h3>
-      </div>
-    </div>
-
-    <div class="buttons">
-      <button class="button has-text-info is-light is-medium is-fullwidth" style="padding: 4px;margin-bottom: 25px;" @click="viewInvokeLoad(curArg)">
-        <span style="margin: auto;">invoke</span>
-      </button>
-    </div>
-    <rightClickMenu ref="rightClickMenu" @del="del" @openWindows="openWindows"></rightClickMenu>
-
+  <div>
+    <input type="file" @change="getBase64"></input>
+    <button @click="postBase64"></button>
   </div>
 </template>
 
@@ -24,7 +12,7 @@ import { Widget } from '../Base/widget'
 import { EditData } from '../Base/EditData'
 import { WidgetConfig } from '../Base/WidgetConfig'
 import rightClickMenu from '../Common/rightClickMenu.vue'
-import axios from 'axios'
+import { request } from '@/network/request'
 import { UpdatePayload } from '../Base/UpdatePayload'
 
   @Component({
@@ -32,27 +20,23 @@ import { UpdatePayload } from '../Base/UpdatePayload'
       rightClickMenu
     }
   })
-export default class Method extends Widget {
-    WidgetComponentName = 'Method';
-    @Prop() index:number;
-    @Prop() refIndex:number;
-    EditPathPoke : string = '';
-    sample : any;
+export default class UploadFile extends Widget {
+    WidgetComponentName = 'GetBase64';
+    @Prop() index: number;
+    @Prop() refIndex: number;
+    EditPathPoke: string = '';
+    sample: any;
     timer?: number;
     StatusValue: string = '';
     userInputData = new Map<string, string>();
-    isShowPath: boolean = false;
-    activeColor:string = '#bbb';
-    stateKey:string = '';
+    // isShowPath: boolean = false;
+    activeColor: string = '#bbb';
+    stateKey: string = '';
     curArg: any = {};
-    StateIndicator = {
-      true: 'green',
-      false: 'red'
-    };
-
+    base64String = '';
 
     config: WidgetConfig = {
-      WidgetComponentName: 'Method',
+      WidgetComponentName: 'GetBase64',
       data: {
         url: '',
         displayname: '',
@@ -60,9 +44,9 @@ export default class Method extends Widget {
       }
     };
 
-    EditData:EditData = {
+    EditData: EditData = {
       edit: {
-        type: 'method',
+        type: 'get-base64',
         parseUrl: '',
         url: this.config.data.url,
         index: this.refIndex
@@ -74,7 +58,7 @@ export default class Method extends Widget {
       },
       params: {
         PokedPath: this.EditPathPoke,
-        action: 'invoke',
+        action: 'get-base64',
         Args: {},
         tempUserInputData: {},
         shouldUpdate: false,
@@ -87,7 +71,7 @@ export default class Method extends Widget {
     }
 
     updateUI () {
-      this.isShowPath = false
+      // this.isShowPath = false
       super.updateUI()
     }
 
@@ -103,7 +87,7 @@ export default class Method extends Widget {
       return super.getConfig()
     }
 
-    setConfig (setConfigData: [WidgetConfig, object], fragment:string) {
+    setConfig (setConfigData: [WidgetConfig, object], fragment: string) {
       super.setConfig(setConfigData, fragment)
       this.curArg = this.EditData.params.Args
     }
@@ -121,12 +105,27 @@ export default class Method extends Widget {
     }
 
     async invokeData (url: string) {
-      await super.invokeData(url)
-      this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL
-      if (this.StatusValue === undefined) {
-        this.StatusValue = 'undefined'
-      }
+      request({
+        url: 'http://localhost:8080/App.html',
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: {
+          base64String: this.base64String
+        }
+      }).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
     }
+
+    // super.invokeData(url)
+    // this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL
+    // if (this.StatusValue === undefined) {
+    //   this.StatusValue = 'undefined'
+    // }
 
     async viewInvokeLoad (Args: UpdatePayload) {
       // this.config.data.userInputData = Args.variables;
@@ -154,7 +153,21 @@ export default class Method extends Widget {
       super.parentUpdate(payload)
       this.viewLoad(this.EditData.params.Args)
     }
-}
+
+    getBase64 (ev: any) {
+      let file = ev.target.files[0];
+      console.log(file.name)
+      console.log(file.type)
+
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = e => {
+        this.base64String = e.target.result;
+        console.log(this.base64String)
+      }
+    }
+  }
+
 </script>
 
 <style scoped>

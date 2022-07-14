@@ -28,7 +28,9 @@ import { Widget } from '../Base/widget'
 import { EditData } from '../Base/EditData'
 import { WidgetConfig } from '../Base/WidgetConfig'
 import rightClickMenu from '../Common/rightClickMenu.vue'
-import {Component,Prop,Watch, Vue}from 'vue-property-decorator';
+import {Component,Watch, Vue}from 'vue-property-decorator';
+import { UpdatePayload } from '@/Windows/models/UpdatePayload'
+
 
   @Component({
     components: {

@@ -38,17 +38,14 @@
             Widget layout
           </a>
 
+          <a class="navbar-item navpadding" @click="setBackground"
+          >
+            Upload Background
+          </a>
+
         </div>
 
         <div class="navbar-end uploadlocal">
-          <div class="navbar-item">
-            <div class="field">
-              <div class="control">
-                <!--                <input class="input" @keydown.enter="setBackground" placeholder="background url">-->
-                <button class="button is-primary is-light" @click="setBackground">set background</button>
-              </div>
-            </div>
-          </div>
           <div class="navbar-item">
             <div class="file has-name is-right is-fullwidth " id="file"
                  @change="loadTextFromFile">
@@ -75,7 +72,6 @@
       </div>
 
     </nav>
-
     <div id="appLeftClick" :style="{background: 'url('+ backgroundUrl +')'+'no-repeat center / ' + backgroundWidth + backgroundHeight}"
          style="min-height: 100vh; background-attachment: fixed;">
 
@@ -86,11 +82,12 @@
         :is-draggable= isShowDrag
         :is-resizable= isShowRes
         :is-mirrored="false"
-        :vertical-compact="true"
         :margin="[10, 10]"
         :use-css-transforms="true"
-
+        :prevent-collision="true"
+        :vertical-compact="false"
         :autoSize="true"
+        :responsive="false"
 
       >
 
@@ -139,18 +136,19 @@ import { Widget } from './components/Base/widget'
 // import {UpdateWidget} from "./app.vue";
 
 // when add more available widgets add ref to the widgets
-import LabelStatus from './components/Status/LabelStatus'
+import LabelStatus from './components/Status/LabelStatus.vue'
 import rightClickMenu from '@/components/Common/rightClickMenu.vue'
-import Config from './components/Config/Config'
-import BoolConfig from './components/Config/BoolConfig'
-import Status from './components/Status/Status'
-import Grid from './components/Layout/Grid'
-import State from './components/State/State'
-import BoolState from './components/State/BoolState'
-import Method from './components/Method/Method'
-import VarBroadcast from './components/Broadcast/VarBroadcast'
-import Navigation from './components/Navigation/Navigation'
+import Config from './components/Config/Config.vue'
+import BoolConfig from './components/Config/BoolConfig.vue'
+import Status from './components/Status/Status.vue'
+import Grid from './components/Layout/Grid.vue'
+import State from './components/State/State.vue'
+import BoolState from './components/State/BoolState.vue'
+import Method from './components/Method/Method.vue'
+import VarBroadcast from './components/Broadcast/VarBroadcast.vue'
+import Navigation from './components/Navigation/Navigation.vue'
 import WaveView from './components/WaveView/WaveView.vue'
+import GetBase64 from './components/GetBase64/GetBase64.vue'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
@@ -171,7 +169,8 @@ import WaveView from './components/WaveView/WaveView.vue'
       Navigation,
       BoolConfig,
       VarBroadcast,
-      WaveView
+      WaveView,
+      GetBase64
     }
   })
 
@@ -203,7 +202,8 @@ export default class App extends Vue {
       'Navigation',
       'BoolConfig',
       'VarBroadcast',
-      'WaveView'
+      'WaveView',
+      'GetBase64'
     ];
 
     deleteWidget (index:number):void{
@@ -220,12 +220,12 @@ export default class App extends Vue {
       this.isShowRes = true
       const refactorList = document.getElementsByClassName('refactor')
       console.log(refactorList)
-      // for (var i = 0; i < refactorList.length; i++) {
-      //   // refactorList[i].classList.add("vue-draggable-handle");
-      //   // refactorList[i].classList.add("vue-resizable-handle");
-      //
-      //   refactorList[i].style.backgroundColor = 'rgba(238,238,238,0.89)'
-      // }
+      for (var i = 0; i < refactorList.length; i++) {
+        // refactorList[i].classList.add("vue-draggable-handle");
+        // refactorList[i].classList.add("vue-resizable-handle");
+
+        refactorList[i].style.backgroundColor = 'rgba(238,238,238,0.89)'
+      }
     }
 
     getSchemas (schemas:any[]) {
@@ -285,7 +285,7 @@ export default class App extends Vue {
           this.isShowDrag = false
           this.isShowRes = false
           // refactorList[i].classList.remove("vue-resizable-handle");
-          // refactorList[i].style.backgroundColor = 'white'
+          refactorList[i].style.backgroundColor = 'transparent'
         }
       }
 
