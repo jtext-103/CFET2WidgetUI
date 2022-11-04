@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-
-    <nav class="navbar is-info"  role="navigation" aria-label="main navigation">
+    <nav class="navbar is-info"  role="navigation" aria-label="main navigation" id="header">
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarhome">
         <span aria-hidden="true"></span>
@@ -12,7 +11,7 @@
       <div id="navbarhome" class="navbar-menu">
         <div class="navbar-start ">
 
-          <div class="navbar-item has-dropdown is-hoverable navpadding">
+          <div class="navbar-item  is-hoverable navpadding">
             <a class="navbar-link ">
               Add Widget
             </a>
@@ -84,10 +83,8 @@
         :is-mirrored="false"
         :margin="[10, 10]"
         :use-css-transforms="true"
-        :prevent-collision="true"
-        :vertical-compact="false"
+        :vertical-compact="true"
         :autoSize="true"
-        :responsive="false"
 
       >
 
@@ -106,7 +103,6 @@
         >
 
           <div  style="border-color: rgb(206, 212, 218);" >
-
             <div class=" columns" style="margin-bottom: 0px;margin-left: 5px;" ></div>
 
           </div>
@@ -148,7 +144,7 @@ import Method from './components/Method/Method.vue'
 import VarBroadcast from './components/Broadcast/VarBroadcast.vue'
 import Navigation from './components/Navigation/Navigation.vue'
 import WaveView from './components/WaveView/WaveView.vue'
-import GetBase64 from './components/GetBase64/GetBase64.vue'
+import FileUpload from './components/FileUpload/FileUpload.vue'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
@@ -170,7 +166,7 @@ import GetBase64 from './components/GetBase64/GetBase64.vue'
       BoolConfig,
       VarBroadcast,
       WaveView,
-      GetBase64
+      FileUpload
     }
   })
 
@@ -203,7 +199,7 @@ export default class App extends Vue {
       'BoolConfig',
       'VarBroadcast',
       'WaveView',
-      'GetBase64'
+      'FileUpload'
     ];
 
     deleteWidget (index:number):void{
@@ -567,6 +563,12 @@ export default class App extends Vue {
     width: 140.5px;
     height: 38px;
     margin-top: 3px;
+  }
+
+  #header {
+    position: relative;
+    margin: 0;
+    padding-top: 0px;
   }
 
 </style>

@@ -171,9 +171,7 @@ export class Widget extends Vue {
       .then((response: { data: any; }) => {
         this.sample = response.data;
         console.log(response.data);
-
       })
-
   }
 
   public async invokeData(url: string) {
@@ -181,11 +179,9 @@ export class Widget extends Vue {
     await window.$axios.put(apiLoad)
       .then((response: { data: any; }) => {
         this.sample = response.data;
-
       }).catch((err: any) =>{
           alert(err);
       });
-
   }
 
 

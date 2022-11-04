@@ -3,7 +3,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV !== 'production',
   pages: {
     App: {
-      entry: './src/main.ts'
+      entry: './src/main.ts',
       // template: 'public/index.html',
       // filename: 'index.html',
     },
@@ -15,11 +15,12 @@ module.exports = {
   },
   productionSourceMap: false,
 
-  outputDir: 'D:\\CFET2WidgetUIZyz-output',
+  outputDir: 'D:/CFETWidget/CFET2WidgetUIZyz-output',
+  // outputDir: '/CFET2WidgetUI_output',
   devServer: {
     proxy: {
       '/': {
-        target: 'http://localhost:5110/',
+        target: 'http://localhost:8001/',
         secure: false,
         changeOrigin: true
       }

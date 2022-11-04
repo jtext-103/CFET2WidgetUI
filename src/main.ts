@@ -8,7 +8,6 @@ import Buefy from 'buefy'
 import axios from './axios/index'
 
 
-
 import * as VueWindow from '@hscmap/vue-window'
 import ProgressBar from 'vuejs-progress-bar'
 import ToggleButton from 'vue-js-toggle-button'

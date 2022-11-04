@@ -6,7 +6,7 @@ export default class PathProcessor {
         let str = '';
         //取出path中的$ $，数组
         const result = path.match(urlRegExp);
-        console.log(result);
+       // console.log(result);
         if (result != null) {
             //遍历map和数组
             variables.forEach((value: string, key: string) => {
