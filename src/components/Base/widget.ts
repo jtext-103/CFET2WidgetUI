@@ -24,6 +24,7 @@ export class Widget extends Vue {
   userInputData = new Map<string, string>();
   pathwithVar: string = "";
   StatusValue: string = "undefined";
+  isSetConfig: boolean = false;
 
 
   public config : WidgetConfig = {
