@@ -108,6 +108,7 @@ export default class Config extends Widget {
       super.openWindows()
     }
 
+    // poke调用
     pathPoke () {
       this.config.data.url = this.EditData.edit.url
       this.EditPathPoke = this.EditData.edit.url
@@ -125,6 +126,7 @@ export default class Config extends Widget {
       })
     }
 
+    // 广播功能
     parentUpdate (payload: UpdatePayload): void {
       if (this.userSetInputData.size === 0) {
         this.setInputData(this.EditData.params.Args)
@@ -163,6 +165,8 @@ export default class Config extends Widget {
       })
     }
 
+    // 拼接路径（get和set）
+    // 如果是poke，则自动取出最后一个参数为放到widget中的参数，其余在edit窗口
     samplePoke (sample: any) {
       var samplePath = sample.CFET2CORE_SAMPLE_PATH
       console.log(samplePath)
@@ -222,6 +226,7 @@ export default class Config extends Widget {
       })
 
       /// dummyTest/ReturnDictConfig?key=$key$&value=$value$
+      // 去掉最后一个符号&
       if (count !== 0) {
         setpokedPath = setpokedPath.substring(0, setpokedPath.length - 1)
       }
@@ -270,6 +275,7 @@ export default class Config extends Widget {
       this.viewGetLoad(Args)
     }
 
+    // 更新视图，view相关的命名函数都是累死的功能
     async viewGetLoad (Args: UpdatePayload) {
       // this.config.data.userInputData = Args.variables;
       this.userGetInputData = Args.variables

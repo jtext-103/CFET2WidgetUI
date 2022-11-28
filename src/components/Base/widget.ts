@@ -33,6 +33,8 @@ export class Widget extends Vue {
       url: ''
     }
   };
+
+  // 和edit窗口交互的数据
   public EditData : EditData = {
     edit: {
       type: '',
@@ -55,7 +57,7 @@ export class Widget extends Vue {
     this.$emit('del', index);
   }*/
 
-
+  // 打开编辑窗口
   public openWindows(){
     var fragment = window.location.origin;
     var JsonData = JSON.stringify(this.EditData);
@@ -65,18 +67,21 @@ export class Widget extends Vue {
     window.open(url+httpData, "WidgetWindow",'height=400, width=800, top=200, left=400, toolbar=no');
   }
 
+
   public updateUI() {
     this.EditData.params.PokedPath = this.config.data.url;
     this.EditData.edit.url = this.config.data.url;
     this.openWindows();
   }
 
+  // 保存页面（save按钮）
   public getConfig(): [WidgetConfig, object] {
 
     return [this.config,this.EditData];
 
   }
 
+  // 从json文件恢复用户保存的界面
   public setConfig(setConfigData: [WidgetConfig,object],fragment:string): void {
 
     this.config = setConfigData[0];
@@ -115,6 +120,7 @@ export class Widget extends Vue {
 
   }
 
+  // poke
   public pathPoke() {
     this.config.data.url = this.EditData.edit.url;
     this.EditPathPoke = this.EditData.edit.url;
@@ -132,7 +138,7 @@ export class Widget extends Vue {
 
   }
 
-  //app
+  // 解析拼接路径
   public samplePoke(sample: any) {
     var samplePath = sample.CFET2CORE_SAMPLE_PATH;
     var pokedPath: string;
@@ -191,6 +197,7 @@ export class Widget extends Vue {
 
 
   //called when widgetParams action clicked
+  // 更新视图
   public async viewLoad(Args: UpdatePayload) {
 
     // this.config.data.userInputData = Args.variables;
@@ -218,6 +225,7 @@ export class Widget extends Vue {
 
   }
 
+  // ws事件相关的功能
   public connectScoketAndSubscribe(pathwithVar: string){
     var _this = this;
     if(pathwithVar.search("http:\/\/") != -1){
@@ -262,6 +270,7 @@ export class Widget extends Vue {
       console.log("Connection closed");}
   }
 
+  // 广播
   parentUpdate(payload: UpdatePayload): void {
     if(Object.prototype.toString.call(this.EditData.params.userInputData) == '[object Map]'){
       this.userInputData = this.strMapObjChange.strMapToObj(
