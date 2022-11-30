@@ -153,7 +153,8 @@ npm安装http-server，进入html同级目录后，输入命令行http-server . 
 ---
 
 ## Wigets
-* [Status](./src/components/Status/README/Status.pdf)
+
+[Status待删](./src/components/Status/README/Status.pdf)
 * [Config](./src/components/Config/README/Config.md)
 * [Navigation](./src/components/Navigation/README/Navigation.md)
 * [Method](./src/components/Method/README/Method.md)
