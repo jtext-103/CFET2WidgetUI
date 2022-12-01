@@ -141,7 +141,7 @@ npm安装http-server，进入html同级目录后，输入命令行http-server . 
     #### CustomView路径替换
     这个功能有点难理解，我先解释一下背景
     比如我们有三个灯，分别对应/103/light1，/103/light2和/103/light3
-    这三个灯需要的界面是一摸一样的，只是对应的资料路径不同，如果按照一个灯一个json文件，那就要配置3次几乎一样的界面，如果有100个灯就要配置100次，太折腾了
+    这三个灯需要的界面是一摸一样的，只是对应的资源路径不同，如果按照一个灯一个json文件，那就要配置3次几乎一样的界面，如果有100个灯就要配置100次，太折腾了
     
     所以，我们在搭建用户界面的时候，把路径不同的地方，配置成/103/$startpath$，然后再点击save按钮，保存成json，同时更改CustomViewConfig.json里面的配置，如增加一行："light[1-3]":"light.json"
     
@@ -149,13 +149,31 @@ npm安装http-server，进入html同级目录后，输入命令行http-server . 
     
     这样相同的界面不需要配置多次
     
-    `注意：保存之后如果要在之前的界面上更改url配置，需要再点击poke或者parseUrl，否则有些中间处理的数据可能还是上一次保存的旧数据`
+    * **`注意：保存之后如果要在之前的界面上更改url配置，需要再点击poke或者parseUrl，否则有些中间处理的数据可能还是上一次保存的旧数据`**
 ---
 
 ## Wigets
 
-[Status待删](./src/components/Status/README/Status.pdf)
+* [Status](./src/components/Status/README/Status.md)
 * [Config](./src/components/Config/README/Config.md)
 * [Navigation](./src/components/Navigation/README/Navigation.md)
 * [Method](./src/components/Method/README/Method.md)
 * [Broadcast](./src/components/Broadcast/README/Broadcast.md)
+
+## 开发者技术文档
+
+对于新接手WidgetUI的同学，建议的学习路径如下：
+
+* 首先理解cfet基础的概念，比如cr，thing等等
+
+* 运行cfet程序，学会手动使用cr
+
+* 了解不同的widget的作用
+
+* 学习relay的用法和意义
+
+* 学习代码细节
+
+* 实现一个简单的Widget
+
+* [技术文档](./src/components/doc/base.md)

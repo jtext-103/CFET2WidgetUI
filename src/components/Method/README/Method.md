@@ -21,3 +21,5 @@ There is a function, you need to call this function just click the button.
 For example, If you want to control the electric mosquito swatter's discharge(every 10 minutes of discharge), after configuring Widget, click it, and it will discharge for 10 minutes.
 
 ![](2021-02-03-21-24-07.png)
+
+注意：对于前端来说，method就是按钮，配置好了之后点击就行，因此method的参数要不就是固定的传参，要不就没有参数，不支持每次点击都更改参数，如果要更改参数就使用config。其次，method不同于其他widget不会每秒轮询，点击才触发功能
