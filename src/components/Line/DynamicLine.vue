@@ -27,6 +27,8 @@ import rightClickMenu from '../Common/rightClickMenu.vue'
 import { Line } from '@antv/g2plot'
 import { UpdatePayload } from '../Base/UpdatePayload'
 
+const DynamicLineDataLength = 10
+
 @Component({
   components: {
     rightClickMenu
@@ -94,7 +96,7 @@ export default class DynamicLine extends Widget {
       xAxis: {
         type: 'time',
         mask: 'HH:MM:ss',
-        tickCount: 10
+        tickCount: DynamicLineDataLength
       },
       smooth: true,
       point: {},
@@ -167,7 +169,7 @@ export default class DynamicLine extends Widget {
     }
   }
 
-  updateDynamicLineData (x: number, y: string, len: number = 10) {
+  updateDynamicLineData (x: number, y: string, len: number = DynamicLineDataLength) {
     if (this.dynamicLineDataStack.length === len) {
       this.dynamicLineDataStack.shift()
     }
