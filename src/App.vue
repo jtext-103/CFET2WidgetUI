@@ -147,7 +147,6 @@ import { DynamicLine } from '@/components'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
-console.log(DynamicLine.prototype.WidgetComponentName)
   @Component({
     components: {
       // when add more available widgets add ref to the widgets
@@ -364,13 +363,8 @@ export default class App extends Vue {
 
     UpdateWidget (EditData:any) {
       if (EditData.edit.type !== 'WavaView') {
-        console.log('UpdateWidget 1111')
-        console.log(this.$refs)
-        console.log(EditData)
         this.$refs[EditData.edit.index][0].EditData = EditData
-        console.log('UpdateWidget 2222')
         this.$refs[EditData.edit.index][0].pathPoke()
-        console.log('UpdateWidget 3333')
         this.$refs[EditData.edit.index][0].viewLoad(EditData.params.Args)
         // wava
       } else {
