@@ -67,15 +67,7 @@ export default class DynamicLine extends Widget {
       fontSize: 22,
       title: '',
       titleSize: '',
-      unit: '',
-      StateIndicatorFile: {
-        hh: 80,
-        h: 75,
-        l: 40,
-        ll: 20,
-        max: 100,
-        min: 0
-      }
+      unit: ''
     },
     params: {
       PokedPath: this.EditPathPoke,
@@ -88,6 +80,11 @@ export default class DynamicLine extends Widget {
   }
 
   mounted () {
+    this.initializeDynamicLine()
+    this.timer = setInterval(this.refresh, 1000)
+  }
+
+  initializeDynamicLine () {
     this.dynamicLine = new Line(this.$refs.line as HTMLDivElement, {
       data: this.dynamicLineDataStack,
       padding: 'auto',
@@ -95,7 +92,7 @@ export default class DynamicLine extends Widget {
       yField: 'y',
       xAxis: {
         type: 'time',
-        mask: 'HH:MM:ss',
+        mask: 'hh:mm:ss',
         tickCount: DynamicLineDataLength
       },
       smooth: true,
@@ -106,7 +103,6 @@ export default class DynamicLine extends Widget {
       }
     })
     this.dynamicLine.render()
-    this.timer = setInterval(this.refresh, 1000)
   }
 
   del () {
@@ -163,7 +159,7 @@ export default class DynamicLine extends Widget {
     this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL
     this.updateDynamicLineData(currentTime.getTime(), this.StatusValue)
     if (this.dynamicLine === undefined) {
-      this.mounted()
+      this.initializeDynamicLine()
     } else {
       this.dynamicLine.changeData(this.dynamicLineDataStack)
     }
