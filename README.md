@@ -166,7 +166,7 @@ npm安装http-server，进入html同级目录后，输入命令行http-server . 
 
 * 首先理解cfet基础的概念，比如cr，thing等等
 
-* 运行cfet程序，学会手动使用cr
+* 运行cfet程序，学会手动使用CR
 
 * 了解不同的widget的作用
 
