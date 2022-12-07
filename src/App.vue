@@ -143,10 +143,10 @@ import Method from './components/Method/Method'
 import VarBroadcast from './components/Broadcast/VarBroadcast'
 import Navigation from './components/Navigation/Navigation'
 import WaveView from './components/WaveView/WaveView.vue'
+import { DynamicLine } from '@/components'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
 // this is the view selecotr class
-
   @Component({
     components: {
       // when add more available widgets add ref to the widgets
@@ -163,7 +163,8 @@ import WaveView from './components/WaveView/WaveView.vue'
       Navigation,
       BoolConfig,
       VarBroadcast,
-      WaveView
+      WaveView,
+      DynamicLine
     }
   })
 
@@ -192,7 +193,8 @@ export default class App extends Vue {
       'Navigation',
       'BoolConfig',
       'VarBroadcast',
-      'WaveView'
+      'WaveView',
+      DynamicLine.WidgetComponentName
     ];
 
     deleteWidget (index:number):void{
@@ -360,7 +362,6 @@ export default class App extends Vue {
     }
 
     UpdateWidget (EditData:any) {
-      console.log(EditData)
       if (EditData.edit.type !== 'WavaView') {
         this.$refs[EditData.edit.index][0].EditData = EditData
         this.$refs[EditData.edit.index][0].pathPoke()
