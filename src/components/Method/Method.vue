@@ -128,9 +128,6 @@ export default class Method extends Widget {
       }
     }
 
-    viewLoad (Args: UpdatePayload) {
-      this.viewInvokeLoad(Args)
-    }
     async viewInvokeLoad (Args: UpdatePayload) {
       // this.config.data.userInputData = Args.variables;
       this.userInputData = Args.variables

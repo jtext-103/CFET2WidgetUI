@@ -208,8 +208,8 @@ export default class FileUpload extends Widget {
       } */
 
     parentUpdate (payload: UpdatePayload): void {
-      super.parentUpdate(payload)
-      this.viewLoad(this.EditData.params.Args)
+      // super.parentUpdate(payload)
+      // this.viewLoad(this.EditData.params.Args)
     }
 
     getBase64 () {

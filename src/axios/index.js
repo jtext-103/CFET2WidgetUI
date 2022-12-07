@@ -4,7 +4,7 @@ import qs from 'qs'
 import { decode } from '@msgpack/msgpack'
 
 // 响应时间
-axios.defaults.timeout = 50000
+axios.defaults.timeout = 5000
 // 配置cookie
 // axios.defaults.withCredentials = true
 // 配置请求头

@@ -33,7 +33,7 @@ export class Widget extends Vue {
     }
   };
 
-  public EditData : object = {
+  public EditData : EditData = {
     edit: {
       type: '',
       parseUrl: '',
