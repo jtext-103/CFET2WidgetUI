@@ -47,6 +47,7 @@ export default class LabelStatus extends Widget {
     timer?: number;
     userInputData = new Map<string, string>();
 
+
     config:WidgetConfig = {
       WidgetComponentName: 'LabelStatus',
       data: {
