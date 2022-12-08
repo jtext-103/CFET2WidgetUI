@@ -45,7 +45,7 @@ export default class Status extends Widget {
     WidgetComponentName = 'Status';
     @Prop() index: number; // 这里回头检查下!:
     @Prop() refIndex: number;
-    gaugeTicks:number[]=[0, 0.2, 0.4, 0.75, 1];
+    gaugeTicks:number[]=[0, 0.2, 0.4, 0.75, 0.8, 1];
     gauge: object;
     value:number = 0;
     tempValue:number = 0;
@@ -96,7 +96,7 @@ export default class Status extends Widget {
     };
 
     mounted () {
-      this.gauge = new Gauge(this.$refs.gauge, {
+      this.gauge = new Gauge(this.$refs.gauge as HTMLDivElement, {
         percent: 0,
         range: {
           ticks: [0, 0.2, 0.4, 0.75, 0.8, 1],
@@ -106,7 +106,8 @@ export default class Status extends Widget {
           content: {
             formatter: ({ percent }) => ''
           }
-        }
+        },
+        animation:false,
       })
 
       this.gauge.render()
@@ -119,22 +120,26 @@ export default class Status extends Widget {
     }
 
     ParsingStateNum () {
-      var StatusNum = parseFloat(this.StatusValue)
-      console.log(StatusNum)
-      this.value = parseFloat((StatusNum - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
+      if (this.StatusValue === 'undefined') {
+        this.value = 0
+      } else {
+        var StatusNum = parseFloat(this.StatusValue)
+        this.value = parseFloat((StatusNum - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
+      }
       this.gaugeTicks[0] = 0
       this.gaugeTicks[1] = parseFloat((this.EditData.props.StateIndicatorFile.ll - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[2] = parseFloat((this.EditData.props.StateIndicatorFile.l - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[3] = parseFloat((this.EditData.props.StateIndicatorFile.h - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[4] = parseFloat((this.EditData.props.StateIndicatorFile.hh - this.EditData.props.StateIndicatorFile.min) / (this.EditData.props.StateIndicatorFile.max - this.EditData.props.StateIndicatorFile.min))
       this.gaugeTicks[5] = 1
+      // this.gauge.changeData(this.value)
       this.gauge.options.percent = this.value
-      console.log(this.value)
+      // console.log(this.value)
       this.gauge.options.range = {
         ticks: this.gaugeTicks,
         color: ['red', 'yellow', 'green', 'yellow', 'red']
       }
-
+      console.log(this.gauge)
       this.gauge.render()
 
       if (this.StatusValue >= parseFloat(this.EditData.props.StateIndicatorFile.hh)) {

@@ -4,7 +4,7 @@
 
 ## Usage of Navigation 
 
-Navigation paths are divided into two types, one is user-defined and the other is the upper level of the resource.
+Navigation paths are divided into two types, one is user-defined and the other is the parent path and children path of the resource.
 
 ![](2021-02-03-21-36-59.png)
 
@@ -31,5 +31,9 @@ For instance: if url is */bedroom/waterheater/A*
                     */bedroom/*
 
 Click on the resource link to enter a blank main page, and then website will automatically display a corresponding Widget based on this resource.
+
+### 3. ChildPath
+
+和父路径同理，如果没有就不显示
 
 ---
