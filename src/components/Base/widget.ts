@@ -139,14 +139,18 @@ export class Widget extends Vue {
   }
 
   // 解析拼接路径
-  public samplePoke(sample: any) {
+  public samplePoke(sample: any,action?: string) {
     var samplePath = sample.CFET2CORE_SAMPLE_PATH;
     var pokedPath: string;
     pokedPath = samplePath;
     console.log("sam"+ pokedPath);
     var count: number = 0;
 
-    var temp = sample.Actions.get.Parameters;
+    if (action != null){
+      var temp = sample.Actions[action].Parameters;
+    }else{
+      var temp = sample.Actions.get.Parameters;
+    }
     temp = JSON.parse(JSON.stringify(temp));
     temp = this.strMapObjChange.objToStrMap(temp);
     var Parameters: Map<string, string>;
@@ -185,6 +189,7 @@ export class Widget extends Vue {
 
   public async invokeData(url: string) {
     var apiLoad = url;
+    console.log(url);
     await window.$axios.put(apiLoad)
       .then((response: { data: any; }) => {
         this.sample = response.data;

@@ -51,7 +51,6 @@ export default class Method extends Widget {
       false: 'red'
     };
 
-
     config: WidgetConfig = {
       WidgetComponentName: 'Method',
       data: {
@@ -111,10 +110,11 @@ export default class Method extends Widget {
 
     pathPoke () {
       super.pathPoke()
+      this.curArg = this.EditData.params.Args
     }
 
     samplePoke (sample: any) {
-      super.samplePoke(sample)
+      super.samplePoke(sample, 'invoke')
     }
 
     replaceStartPath (startPath: string) {
