@@ -139,16 +139,16 @@ export class Widget extends Vue {
   }
 
   // 解析拼接路径
-  public samplePoke(sample: any, action?: string) {
+  public samplePoke(sample: any,action?: string) {
     var samplePath = sample.CFET2CORE_SAMPLE_PATH;
     var pokedPath: string;
     pokedPath = samplePath;
     console.log("sam" + pokedPath);
     var count: number = 0;
 
-    if (action != null) {
+    if (action != null){
       var temp = sample.Actions[action].Parameters;
-    } else {
+    }else{
       var temp = sample.Actions.get.Parameters;
     }
     temp = JSON.parse(JSON.stringify(temp));
