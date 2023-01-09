@@ -1,4 +1,4 @@
-import { Vue ,Component,Prop,Watch, Vue} from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch, Vue } from 'vue-property-decorator';
 import { EditData } from './EditData';
 import { WidgetConfig } from './WidgetConfig';
 import * as webpack from "webpack";
@@ -19,31 +19,25 @@ export class Widget extends Vue {
   WidgetComponentName = '';
   pathProcessor = new PathProcessor();
   strMapObjChange = new StrMapObjChange();
-  EditPathPoke : string = '';
-  sample : any;
+  EditPathPoke: string = '';
+  sample: any;
   userInputData = new Map<string, string>();
-<<<<<<< HEAD
-  pathwithVar: string = '';
-  StatusValue: string = 'undefined';
-=======
+
   pathwithVar: string = "";
   StatusValue: string = "undefined";
   isSetConfig: boolean = false;
->>>>>>> 97dcd249d61c3a4e2291171fcdba4d6e8fac659f
 
 
-  public config : WidgetConfig = {
+  public config: WidgetConfig = {
     WidgetComponentName: '',
     data: {
       url: ''
     }
   };
 
-<<<<<<< HEAD
-=======
+
   // 和edit窗口交互的数据
->>>>>>> 97dcd249d61c3a4e2291171fcdba4d6e8fac659f
-  public EditData : EditData = {
+  public EditData: EditData = {
     edit: {
       type: '',
       parseUrl: '',
@@ -55,7 +49,7 @@ export class Widget extends Vue {
     params: {
       PokedPath: '',
       Args: {},
-      userInputData:this.userInputData
+      userInputData: this.userInputData
     }
   };
 
@@ -65,27 +59,17 @@ export class Widget extends Vue {
     this.$emit('del', index);
   } */
 
-<<<<<<< HEAD
-
-  public openWindows (){
-=======
   // 打开编辑窗口
-  public openWindows(){
->>>>>>> 97dcd249d61c3a4e2291171fcdba4d6e8fac659f
+  public openWindows() {
     var fragment = window.location.origin;
     var JsonData = JSON.stringify(this.EditData);
     var httpData = encodeURIComponent(JsonData);
-    var url =fragment+"/WindowsAppIndex.html/?";
+    var url = fragment + "/WindowsAppIndex.html/?";
     console.log(this.EditData);
-    window.open(url+httpData, "WidgetWindow",'height=400, width=800, top=200, left=400, toolbar=no');
+    window.open(url + httpData, "WidgetWindow", 'height=400, width=800, top=200, left=400, toolbar=no');
   }
 
-<<<<<<< HEAD
-  public updateUI () {
-=======
-
   public updateUI() {
->>>>>>> 97dcd249d61c3a4e2291171fcdba4d6e8fac659f
     this.EditData.params.PokedPath = this.config.data.url;
     this.EditData.edit.url = this.config.data.url;
     this.openWindows()
@@ -94,18 +78,18 @@ export class Widget extends Vue {
   // 保存页面（save按钮）
   public getConfig(): [WidgetConfig, object] {
 
-    return [this.config,this.EditData];
+    return [this.config, this.EditData];
 
   }
 
   // 从json文件恢复用户保存的界面
-  public setConfig(setConfigData: [WidgetConfig,object],fragment:string): void {
-
+  public setConfig(setConfigData: [WidgetConfig, object], fragment: string): void {
+    // @ts-ignore
     this.config = setConfigData[0];
     this.EditData = setConfigData[1];
     console.log(this.EditData)
 
-    if(this.WidgetComponentName !== 'Grid') {
+    if (this.WidgetComponentName !== 'Grid') {
       if (this.EditData.edit.url.search("startpath") != -1) {
         this.replaceStartPath(fragment)
       }
@@ -129,7 +113,7 @@ export class Widget extends Vue {
       };
 
       this.EditData.params.Args = Args;
-      if(this.WidgetComponentName !== 'Method'){
+      if (this.WidgetComponentName !== 'Method') {
         this.viewLoad(Args);
       }
     }
@@ -155,14 +139,18 @@ export class Widget extends Vue {
   }
 
   // 解析拼接路径
-  public samplePoke(sample: any) {
+  public samplePoke(sample: any, action?: string) {
     var samplePath = sample.CFET2CORE_SAMPLE_PATH;
     var pokedPath: string;
     pokedPath = samplePath;
-    console.log("sam"+ pokedPath);
+    console.log("sam" + pokedPath);
     var count: number = 0;
 
-    var temp = sample.Actions.get.Parameters;
+    if (action != null) {
+      var temp = sample.Actions[action].Parameters;
+    } else {
+      var temp = sample.Actions.get.Parameters;
+    }
     temp = JSON.parse(JSON.stringify(temp));
     temp = this.strMapObjChange.objToStrMap(temp);
     var Parameters: Map<string, string>;
@@ -199,11 +187,12 @@ export class Widget extends Vue {
 
   public async invokeData(url: string) {
     var apiLoad = url;
+    console.log(url);
     await window.$axios.put(apiLoad)
       .then((response: { data: any; }) => {
         this.sample = response.data;
-      }).catch((err: any) =>{
-          alert(err);
+      }).catch((err: any) => {
+        alert(err);
       });
   }
 
@@ -214,11 +203,11 @@ export class Widget extends Vue {
 
     // this.config.data.userInputData = Args.variables;
     //this.userInputData = Args.variables;
-    this.userInputData =Args.variables;
-    if(this.EditData.edit.url == ''){
-      console.log("1"+this.EditData.edit.parseUrl);
+    this.userInputData = Args.variables;
+    if (this.EditData.edit.url == '') {
+      console.log("1" + this.EditData.edit.parseUrl);
       this.config.data.url = this.EditData.edit.parseUrl;
-    }else {
+    } else {
       this.config.data.url = this.EditData.edit.url;
     }
     this.pathwithVar = this.pathProcessor.FillPathWithVar(
@@ -227,7 +216,7 @@ export class Widget extends Vue {
       this.config.data.url
     );
     console.log(this.pathwithVar);
-    if(this.EditData.edit.isSubscribe === true){
+    if (this.EditData.edit.isSubscribe === true) {
       this.connectScoketAndSubscribe(this.pathwithVar);
     }
 
@@ -238,37 +227,37 @@ export class Widget extends Vue {
   }
 
   // ws事件相关的功能
-  public connectScoketAndSubscribe(pathwithVar: string){
+  public connectScoketAndSubscribe(pathwithVar: string) {
     var _this = this;
-    if(pathwithVar.search("http:\/\/") != -1){
+    if (pathwithVar.search("http:\/\/") != -1) {
 
       pathwithVar = pathwithVar.substr(7);
       var index = pathwithVar.indexOf("\/");
-      var userInputIP = pathwithVar.substr(0,index);
+      var userInputIP = pathwithVar.substr(0, index);
 
       var portIndex = userInputIP.indexOf(":");
-      var ipstr = userInputIP.substr(0,portIndex+1);
-      var portstr = userInputIP.substr(portIndex+1);
+      var ipstr = userInputIP.substr(0, portIndex + 1);
+      var portstr = userInputIP.substr(portIndex + 1);
       var portNum = Number(portstr) + 1;
 
       var userIp = ipstr + portNum.toString();
       pathwithVar = pathwithVar.substr(index);
-      var wsPath = ("ws:" +"\/\/"+userIp).toString();
+      var wsPath = ("ws:" + "\/\/" + userIp).toString();
       var ws = new WebSocket(wsPath);
 
-    }else{
+    } else {
 
-      var ws = new WebSocket("ws://localhost"+":"+window.location.port+1);
-      console.log("ws://localhost"+":"+window.location.port+1);
+      var ws = new WebSocket("ws://localhost" + ":" + window.location.port + 1);
+      console.log("ws://localhost" + ":" + window.location.port + 1);
     }
 
-    ws.onopen = function(evt) {
+    ws.onopen = function (evt) {
       console.log("Connection open");
-      ws.send("{'SourcesAndTypes':[{'Source':'"+pathwithVar+"','EventType':'"+_this.EditData.props.EventType+"'}],'action':0}");
+      ws.send("{'SourcesAndTypes':[{'Source':'" + pathwithVar + "','EventType':'" + _this.EditData.props.EventType + "'}],'action':0}");
     };
 
 
-    ws.onmessage = function(evt) {
+    ws.onmessage = function (evt) {
 
       var responseData = JSON.parse(evt.data);
       _this.sample = responseData.Sample.Context;
@@ -278,27 +267,27 @@ export class Widget extends Vue {
 
     };
 
-    ws.onclose = function(evt) {
-      console.log("Connection closed");}
+    ws.onclose = function (evt) {
+      console.log("Connection closed");
+    }
   }
 
   // 广播
   parentUpdate(payload: UpdatePayload): void {
-    if(Object.prototype.toString.call(this.EditData.params.userInputData) == '[object Map]'){
+    if (Object.prototype.toString.call(this.EditData.params.userInputData) == '[object Map]') {
       this.userInputData = this.strMapObjChange.strMapToObj(
         this.EditData.params.userInputData);
-    }else{
+    } else {
       this.userInputData = this.EditData.params.userInputData;
     }
     var temp = this.userInputData;
     temp = this.strMapObjChange.objToStrMap(temp);
     this.userInputData = temp;
 
-    this.userInputData.forEach((value , key) =>{
-      payload.variables.forEach((valueofpayload,keyofpayload)=>{
-        if(key == keyofpayload && ((this.userInputData.get(key) as string) != (payload.variables.get(keyofpayload) as string)))
-        {
-          this.userInputData.set(key,payload.variables.get(keyofpayload) as string);
+    this.userInputData.forEach((value, key) => {
+      payload.variables.forEach((valueofpayload, keyofpayload) => {
+        if (key == keyofpayload && ((this.userInputData.get(key) as string) != (payload.variables.get(keyofpayload) as string))) {
+          this.userInputData.set(key, payload.variables.get(keyofpayload) as string);
           console.log(this.userInputData);
           this.EditData.params.shouldUpdate = true;
           this.EditData.params.Args.variables = this.userInputData;

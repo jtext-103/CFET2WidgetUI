@@ -16,15 +16,15 @@ axios.defaults.headers['Cache-Control'] = 'no-cache'
 //axios.defaults.headers['Content-Type'] = "application/x-www-form-urlencoded;charset=UTF-8" // 这部分请求头与跨域有关，需要保留
 // axios.defaults.baseURL = 'http://192.168.2.57:8001';
 
-//axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
+axios.defaults.headers['Access-Control-Allow-Origin'] = '*'
 // axios.defaults.headers['Origin'] ='http://192.168.0.187:8080';
-//axios.defaults.headers['Access-Control-Request-Headers'] ='Content-Type';
-//axios.defaults.headers['Access-Control-Request-Methods'] ='PUT,POST,GET,DELETE,OPTIONS';
-//axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
-//axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-//axios.defaults.withCredentials = true// 表示跨域请求时是否需要使用凭证
+axios.defaults.headers['Access-Control-Request-Headers'] = 'Content-Type';
+axios.defaults.headers['Access-Control-Request-Methods'] = 'PUT,POST,GET,DELETE,OPTIONS';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8'
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+axios.defaults.withCredentials = true// 表示跨域请求时是否需要使用凭证
 
-//axios.defaults.withCredentials = false
+axios.defaults.withCredentials = false
 
 axios.interceptors.request.use(
   config => {
