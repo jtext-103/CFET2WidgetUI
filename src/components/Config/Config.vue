@@ -287,11 +287,14 @@ export default class Config extends Widget {
         }
       }
       console.log(this.config.data.get.url)
+      console.log(this.userGetInputData)
+      console.log('test config')
       this.getPathwithVar = this.pathProcessor.FillPathWithVar(
         // this.config.data.userInputData,
         this.userGetInputData,
         this.config.data.get.url
       )
+      console.log(this.getPathwithVar)
       await this.getData(this.getPathwithVar)
     }
 

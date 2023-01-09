@@ -1,11 +1,11 @@
 <!--suppress ALL -->
 <template>
   <div  class="container" id="RightClick" style="margin-top: 30px;">
+
     <div class="columns content " v-bind:class="EditData.props.titleSize" style="margin-bottom: 0px;padding-left: 7px;">
       <div class="column content-table-cell-heading-color is-narrow" style="margin: 0px;padding: 0px;">
         <h3>{{EditData.props.title}}</h3>
       </div>
-
     </div>
 
     <div style=" display: flex; justify-content: center; align-items:center;" class="columns">
@@ -30,6 +30,7 @@ import { WidgetConfig } from '../Base/WidgetConfig'
 import rightClickMenu from '../Common/rightClickMenu.vue'
 import {Component,Prop,Watch, Vue}from 'vue-property-decorator';
 
+
   @Component({
     components: {
       rightClickMenu
@@ -44,6 +45,7 @@ export default class LabelStatus extends Widget {
     sample : any;
     timer?: number;
     userInputData = new Map<string, string>();
+
 
     config:WidgetConfig = {
       WidgetComponentName: 'LabelStatus',

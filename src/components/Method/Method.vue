@@ -41,7 +41,6 @@ export default class Method extends Widget {
     timer?: number;
     StatusValue: string = '';
     userInputData = new Map<string, string>();
-    timer?: number;
     isShowPath: boolean = false;
     activeColor:string = '#bbb';
     stateKey:string = '';
@@ -122,7 +121,7 @@ export default class Method extends Widget {
     }
 
     async invokeData (url: string) {
-      super.invokeData(url)
+      await super.invokeData(url)
       this.StatusValue = this.sample.CFET2CORE_SAMPLE_VAL
       if (this.StatusValue === undefined) {
         this.StatusValue = 'undefined'

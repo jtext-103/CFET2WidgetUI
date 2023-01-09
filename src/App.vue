@@ -1,7 +1,6 @@
 <template>
   <div id="app">
-
-    <nav class="navbar is-info"  role="navigation" aria-label="main navigation">
+    <nav class="navbar is-info"  role="navigation" aria-label="main navigation" id="header">
 
       <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarhome">
         <span aria-hidden="true"></span>
@@ -12,7 +11,7 @@
       <div id="navbarhome" class="navbar-menu">
         <div class="navbar-start ">
 
-          <div class="navbar-item has-dropdown is-hoverable navpadding">
+          <div class="navbar-item  is-hoverable navpadding">
             <a class="navbar-link ">
               Add Widget
             </a>
@@ -38,11 +37,15 @@
             Widget layout
           </a>
 
+          <a class="navbar-item navpadding" @click="setBackground"
+          >
+            Upload Background
+          </a>
+
         </div>
 
         <div class="navbar-end uploadlocal">
           <div class="navbar-item">
-
             <div class="file has-name is-right is-fullwidth " id="file"
                  @change="loadTextFromFile">
               <label class="file-label" style="position: relative;left: 112px;">
@@ -68,8 +71,8 @@
       </div>
 
     </nav>
-
-    <div id="appLeftClick" style="min-height: 100vh;">
+    <div id="appLeftClick" :style="{background: 'url('+ backgroundUrl +')'+'no-repeat center / ' + backgroundWidth + backgroundHeight}"
+         style="min-height: 100vh; background-attachment: fixed;">
 
       <grid-layout
         :layout.sync="widgetList"
@@ -78,10 +81,9 @@
         :is-draggable= isShowDrag
         :is-resizable= isShowRes
         :is-mirrored="false"
-        :vertical-compact="true"
         :margin="[10, 10]"
         :use-css-transforms="true"
-
+        :vertical-compact="true"
         :autoSize="true"
 
       >
@@ -101,7 +103,6 @@
         >
 
           <div  style="border-color: rgb(206, 212, 218);" >
-
             <div class=" columns" style="margin-bottom: 0px;margin-left: 5px;" ></div>
 
           </div>
@@ -131,18 +132,19 @@ import { Widget } from './components/Base/widget'
 // import {UpdateWidget} from "./app.vue";
 
 // when add more available widgets add ref to the widgets
-import LabelStatus from './components/Status/LabelStatus'
+import LabelStatus from './components/Status/LabelStatus.vue'
 import rightClickMenu from '@/components/Common/rightClickMenu.vue'
-import Config from './components/Config/Config'
-import BoolConfig from './components/Config/BoolConfig'
-import Status from './components/Status/Status'
-import Grid from './components/Layout/Grid'
-import State from './components/State/State'
-import BoolState from './components/State/BoolState'
-import Method from './components/Method/Method'
-import VarBroadcast from './components/Broadcast/VarBroadcast'
-import Navigation from './components/Navigation/Navigation'
+import Config from './components/Config/Config.vue'
+import BoolConfig from './components/Config/BoolConfig.vue'
+import Status from './components/Status/Status.vue'
+import Grid from './components/Layout/Grid.vue'
+import State from './components/State/State.vue'
+import BoolState from './components/State/BoolState.vue'
+import Method from './components/Method/Method.vue'
+import VarBroadcast from './components/Broadcast/VarBroadcast.vue'
+import Navigation from './components/Navigation/Navigation.vue'
 import WaveView from './components/WaveView/WaveView.vue'
+import FileUpload from './components/FileUpload/FileUpload.vue'
 import { DynamicLine } from '@/components'
 // import Gauge from "./components/Gauge/Gauge.vue";
 
@@ -164,6 +166,7 @@ import { DynamicLine } from '@/components'
       BoolConfig,
       VarBroadcast,
       WaveView,
+      FileUpload,
       DynamicLine
     }
   })
@@ -180,6 +183,9 @@ export default class App extends Vue {
     isShowDrag = false;
     isShowRes = false;
     fragment = '';
+    backgroundUrl = '';
+    backgroundWidth = 0;
+    backgroundHeight = 0;
 
     // when add more available widgets add its name here
     availableWidgets = [
@@ -194,6 +200,7 @@ export default class App extends Vue {
       'BoolConfig',
       'VarBroadcast',
       'WaveView',
+      'FileUpload',
       DynamicLine.WidgetComponentName
     ];
 
@@ -276,7 +283,7 @@ export default class App extends Vue {
           this.isShowDrag = false
           this.isShowRes = false
           // refactorList[i].classList.remove("vue-resizable-handle");
-          refactorList[i].style.backgroundColor = 'white'
+          refactorList[i].style.backgroundColor = 'transparent'
         }
       }
 
@@ -393,6 +400,9 @@ export default class App extends Vue {
       var widgetConfigList = new AllWidgetConfig()
       widgetConfigList.widgetList = this.widgetList
       widgetConfigList.currentRef = this.lastWidgetIndex.toString()
+      widgetConfigList.backgroundUrl = this.backgroundUrl
+      widgetConfigList.backgroundWidth = this.backgroundWidth
+      widgetConfigList.backgroundHeight = this.backgroundHeight
       return widgetConfigList
     }
 
@@ -417,12 +427,24 @@ export default class App extends Vue {
         )
         this.widgetList = widgets.widgetList
         this.lastWidgetIndex = Number(widgets.currentRef)
+        this.backgroundUrl = widgets.backgroundUrl
+        this.backgroundWidth = widgets.backgroundWidth
+        this.backgroundHeight = widgets.backgroundHeight
         this.$forceUpdate()
         Vue.nextTick(() => {
           // changed here
           this.importActiveWidgetList(this.fragment)
         })
       }
+    }
+
+    setBackground () {
+      const url = prompt('please input background url.')
+      const width = prompt('please input background width(%)')
+      const height = prompt('please input background height(%)')
+      this.backgroundUrl = url
+      this.backgroundWidth = width + '%'
+      this.backgroundHeight = height + '%'
     }
 
     saveWidgetList (): void {
@@ -542,6 +564,12 @@ export default class App extends Vue {
     width: 140.5px;
     height: 38px;
     margin-top: 3px;
+  }
+
+  #header {
+    position: relative;
+    margin: 0;
+    padding-top: 0px;
   }
 
 </style>
